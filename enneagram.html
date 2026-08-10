@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Living Enneagram</title>
+<style>
+  :root{
+    --indigo-deep:#151936; --indigo:#1c2144; --indigo-up:#2a3060;
+    --gold:#e8c88c; --ember:#ffb45e; --moon:#dcd8c8; --slate:#8a91b8;
+  }
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;
+    background:radial-gradient(ellipse at 50% 38%, var(--indigo-up) 0%, var(--indigo) 45%, var(--indigo-deep) 100%);
+    font-family: Georgia, 'Times New Roman', serif; color:var(--moon);}
+  #scene{position:fixed;inset:0;display:block;touch-action:none;}
+  .hud{position:fixed;z-index:10;pointer-events:none;}
+  #titleblock{top:28px;left:34px;max-width:340px;}
+  #eyebrow{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:10px;letter-spacing:.32em;
+    color:var(--slate);text-transform:uppercase;margin-bottom:10px;}
+  #title{font-size:32px;font-weight:normal;color:var(--gold);letter-spacing:.02em;line-height:1.1;margin:0 0 8px 0;}
+  #subtitle{font-style:italic;font-size:14px;color:var(--moon);opacity:.75;line-height:1.5;}
+  #legend{bottom:30px;left:34px;max-width:330px;background:rgba(21,25,54,.72);
+    border-top:1px solid rgba(232,200,140,.45);padding:16px 18px 14px;backdrop-filter:blur(6px);}
+  #legend div{font-size:12.5px;line-height:1.65;opacity:.92;}
+  #legend b{color:var(--gold);font-weight:normal;}
+  #legend .ember{color:var(--ember);}
+  #octave{bottom:34px;right:38px;text-align:right;}
+  #octnum{font-size:44px;color:var(--gold);line-height:1;}
+  #octlabel{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:10px;letter-spacing:.3em;
+    color:var(--slate);text-transform:uppercase;margin-top:6px;}
+  #speedctl{margin-top:14px;pointer-events:auto;display:flex;align-items:center;
+    justify-content:flex-end;gap:10px;}
+  #speedctl button{width:30px;height:30px;background:rgba(21,25,54,.72);
+    border:1px solid rgba(232,200,140,.5);color:var(--gold);font-size:17px;line-height:1;
+    cursor:pointer;border-radius:3px;font-family:Georgia,serif;}
+  #speedctl button:active{background:rgba(232,200,140,.25);}
+  #speedval{font-size:13px;color:var(--moon);min-width:42px;text-align:center;}
+  #hint{top:30px;right:38px;font-family:Avenir,'Segoe UI',system-ui,sans-serif;
+    font-size:10.5px;letter-spacing:.14em;color:var(--slate);text-transform:uppercase;
+    max-width:360px;text-align:right;line-height:1.8;}
+  @media (max-width:900px){
+    #hint{top:104px;right:16px;max-width:180px;font-size:9.5px;letter-spacing:.10em;}
+  }
+  #shockcall{font-style:italic;font-size:13px;color:var(--ember);opacity:0;
+    transition:opacity .5s;min-height:1.6em;margin-bottom:8px;
+    text-shadow:0 0 14px rgba(255,180,94,.45);}
+  @media (max-width:640px){
+    #title{font-size:24px} #legend{max-width:250px;font-size:11px} #subtitle{display:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div class="hud" id="titleblock">
+  <div id="eyebrow">From The Modern Fourth Way</div>
+  <h1 id="title">The Living Enneagram</h1>
+  <div id="subtitle">The Law of Octaves climbs the spiral. The Law of Three pulses through the triangle. The inner circulation weaves between the levels.</div>
+</div>
+<div class="hud" id="legend">
+  <div id="shockcall"></div>
+  <div><b>Gold thread</b> — the octave, do to do, one turn per level</div>
+  <div><b>Bright climber</b> — a process ascending; watch it <span class="ember">stall at the two intervals</span></div>
+  <div><span class="ember">Flashes at 3 and 6</span> — the shocks that carry it across</div>
+  <div><b>Gold runner on the triangle</b> — the Law of Three: do&#8201;&rarr;&#8201;3&#8201;&rarr;&#8201;6&#8201;&rarr;&#8201;next do, climbing in unison with the spiral</div>
+  <div><b>Pale comet</b> — the inner circulation: it jumps ahead, then returns — every return landing exactly as the climber arrives</div>
+</div>
+<div class="hud" id="octave">
+  <div id="octnum">I</div>
+  <div id="octlabel">Octave</div>
+  <div id="speedctl">
+    <button id="spdown" aria-label="Slower">&minus;</button>
+    <span id="speedval">1&times;</span>
+    <button id="spup" aria-label="Faster">+</button>
+  </div>
+</div>
+<div class="hud" id="hint">Drag up or down to tilt &nbsp;&middot;&nbsp; Pinch or scroll to zoom &nbsp;&middot;&nbsp; +/&minus; speed &nbsp;&middot;&nbsp; v17</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+console.log('living-enneagram build v17');
+// ---------- constants ----------
+var TURNS = 4;           // octave levels
+var R = 2.2;             // helix radius
+var H = 1.55;            // rise per turn
+var CENTER_Y = H*TURNS/2;
+var COL = {
+  gold: 0xe8c88c, goldDim: 0x8a7a55, ember: 0xffb45e, emberHot: 0xff9a3c,
+  moon: 0xfff3da, comet: 0xf4ecff, slate: 0x6a719e, bg: 0x1a1f3d
+};
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- renderer / scene / camera ----------
+var canvas = document.getElementById('scene');
+var renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+var scene = new THREE.Scene();
+scene.fog = new THREE.Fog(COL.bg, 18, 70);
+var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
+
+// custom orbit (r128 has no bundled OrbitControls)
+var theta = Math.PI/2, phi = 1.05, lastInteract = -10;   // yaw fixed: front view only
+// start zoomed to fit the whole diagram: vertical fov 46°, so visible height ≈ 0.849·r
+var aspect0 = window.innerWidth / Math.max(window.innerHeight, 1);
+var radius = Math.min(48, Math.max(8.8/0.849, 7.2/(0.849*aspect0)));
+var target = new THREE.Vector3(0, CENTER_Y, 0);  // locked: always projects to viewport center
+var dragging=false, px=0, py=0;
+function updateCamera(){
+  phi = Math.max(0.035, Math.min(Math.PI-0.35, phi));  // 0.035 ≈ straight top-down without gimbal lock
+  radius = Math.max(4.5, Math.min(48, radius));
+  camera.position.set(
+    target.x + radius*Math.sin(phi)*Math.cos(theta),
+    target.y + radius*Math.cos(phi),
+    target.z + radius*Math.sin(phi)*Math.sin(theta));
+  camera.lookAt(target);
+}
+// input: one finger/mouse tilts, two fingers pinch to zoom; the diagram stays centered
+var pointers = {};           // pointerId -> {x, y}
+var pinchDist = 0;
+function pCount(){ return Object.keys(pointers).length; }
+function pinchDistance(){
+  var ids = Object.keys(pointers);
+  var a = pointers[ids[0]], b = pointers[ids[1]];
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+canvas.addEventListener('pointerdown', function(e){
+  e.preventDefault();
+  canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
+  pointers[e.pointerId] = {x: e.clientX, y: e.clientY};
+  if(pCount() === 1){ dragging = true; px = e.clientX; py = e.clientY; }
+  else if(pCount() === 2){ dragging = false; pinchDist = pinchDistance(); }
+  lastInteract = clockTime;
+});
+function endPointer(e){
+  delete pointers[e.pointerId];
+  if(pCount() === 1){
+    var id = Object.keys(pointers)[0];
+    dragging = true; px = pointers[id].x; py = pointers[id].y;
+  } else if(pCount() === 0){ dragging = false; }
+}
+canvas.addEventListener('pointerup', endPointer);
+canvas.addEventListener('pointercancel', endPointer);
+canvas.addEventListener('pointermove', function(e){
+  if(!(e.pointerId in pointers)) return;
+  pointers[e.pointerId] = {x: e.clientX, y: e.clientY};
+  if(pCount() === 2){
+    var d = pinchDistance();
+    if(pinchDist > 0) radius *= pinchDist / d;
+    pinchDist = d;
+    lastInteract = clockTime;
+  } else if(dragging){
+    phi += (e.clientY - py) * 0.0045;   // tilt front-to-back only; yaw is locked
+    px = e.clientX; py = e.clientY;
+    lastInteract = clockTime;
+  }
+});
+canvas.addEventListener('wheel', function(e){
+  e.preventDefault(); radius += e.deltaY * 0.01; lastInteract = clockTime;
+},{passive:false});
+function resize(){
+  var w=window.innerWidth,h=window.innerHeight;
+  renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+  // keep the whole diagram in frame for the current window shape
+  var need = Math.max(8.8/0.849, 7.2/(0.849*(w/Math.max(h,1))));
+  if(radius < need) radius = Math.min(48, need);
+}
+window.addEventListener('resize', resize); resize();
+
+// ---------- helpers ----------
+// enneagram point n (1..9) on level L -> position on helix; u = L + n/9
+function helixPos(u){
+  var a = Math.PI/2 - 2*Math.PI*u;
+  return new THREE.Vector3(R*Math.cos(a), u*H, -R*Math.sin(a));
+}
+function nodePos(L, n){ return helixPos(L + n/9); }
+
+// soft radial glow texture
+function glowTexture(inner, outer){
+  var c=document.createElement('canvas'); c.width=c.height=128;
+  var g=c.getContext('2d');
+  var grad=g.createRadialGradient(64,64,2,64,64,62);
+  grad.addColorStop(0, inner); grad.addColorStop(0.35, outer); grad.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=grad; g.fillRect(0,0,128,128);
+  return new THREE.CanvasTexture(c);
+}
+var texWarm = glowTexture('rgba(255,246,222,1)','rgba(255,180,94,0.55)');
+var texGold = glowTexture('rgba(255,240,205,1)','rgba(232,200,140,0.5)');
+var texCool = glowTexture('rgba(255,255,255,1)','rgba(214,205,255,0.45)');
+
+function glowSprite(tex, size, color){
+  var m=new THREE.SpriteMaterial({map:tex, color:color||0xffffff,
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending});
+  var s=new THREE.Sprite(m); s.scale.set(size,size,1); return s;
+}
+function textSprite(text, px, color, opacity){
+  var c=document.createElement('canvas');
+  var g=c.getContext('2d');
+  var font = px+'px Georgia, serif';
+  g.font=font; var w=Math.ceil(g.measureText(text).width)+16;
+  c.width=w; c.height=px+14;
+  g=c.getContext('2d'); g.font=font;
+  g.fillStyle=color; g.textBaseline='middle';
+  g.shadowColor='rgba(0,0,0,0.6)'; g.shadowBlur=4;
+  g.fillText(text, 8, c.height/2);
+  var tex=new THREE.CanvasTexture(c);
+  var m=new THREE.SpriteMaterial({map:tex, transparent:true, depthWrite:false, opacity:opacity===undefined?1:opacity});
+  var s=new THREE.Sprite(m);
+  var k=0.010; s.scale.set(c.width*k, c.height*k, 1);
+  return s;
+}
+
+// ---------- the spiral (octave thread) ----------
+var HelixCurve = THREE.Curve.prototype ? function(){} : null;
+function makeHelixCurve(){
+  var curve = new THREE.Curve();
+  curve.getPoint = function(t){ return helixPos(t*TURNS); };
+  return curve;
+}
+var tube = new THREE.Mesh(
+  new THREE.TubeGeometry(makeHelixCurve(), 720, 0.016, 8, false),
+  new THREE.MeshBasicMaterial({color:COL.gold, transparent:true, opacity:0.85})
+);
+scene.add(tube);
+// faint under-glow along the thread
+var glowTube = new THREE.Mesh(
+  new THREE.TubeGeometry(makeHelixCurve(), 240, 0.05, 8, false),
+  new THREE.MeshBasicMaterial({color:COL.gold, transparent:true, opacity:0.10,
+    blending:THREE.AdditiveBlending, depthWrite:false})
+);
+scene.add(glowTube);
+
+// ---------- nodes, labels ----------
+var NOTE = {1:'re',2:'mi',4:'fa',5:'sol',7:'la',8:'si'};
+var nodeMesh = {};   // key L_n
+var pulse36 = [];    // shock-point meshes for gentle pulsing
+for(var L=0; L<TURNS; L++){
+  for(var n=1;n<=9;n++){
+    var p = nodePos(L,n), mesh;
+    if(n===9){
+      mesh = new THREE.Mesh(new THREE.SphereGeometry(0.10,20,20),
+        new THREE.MeshBasicMaterial({color:COL.moon}));
+    } else if(n===3||n===6){
+      mesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.085),
+        new THREE.MeshBasicMaterial({color:COL.ember}));
+      pulse36.push({mesh:mesh, phase:(n===3?0:Math.PI)});
+    } else {
+      mesh = new THREE.Mesh(new THREE.SphereGeometry(0.055,16,16),
+        new THREE.MeshBasicMaterial({color:COL.gold}));
+    }
+    mesh.position.copy(p); scene.add(mesh);
+    nodeMesh[L+'_'+n]=mesh;
+  }
+  // do label with octave numeral at each level's OPENING do
+  var roman = ['I','II','III','IV'][L];
+  var doLab = textSprite('do — '+roman, 26, 'rgba(255,243,218,0.95)');
+  doLab.position.copy(helixPos(L)).add(new THREE.Vector3(0.32,0.14,0));
+  scene.add(doLab);
+}
+// opening do at the very bottom of the spiral
+var bottomDo = new THREE.Mesh(new THREE.SphereGeometry(0.10,20,20),
+  new THREE.MeshBasicMaterial({color:COL.moon}));
+bottomDo.position.copy(helixPos(0)); scene.add(bottomDo);
+var topLab = textSprite('do', 24, 'rgba(255,243,218,0.9)');
+topLab.position.copy(helixPos(TURNS)).add(new THREE.Vector3(0.24,0.14,0));
+scene.add(topLab);
+
+// note names + shock labels on the bottom level only (keeps the scene quiet)
+for(var n2=1;n2<=8;n2++){
+  if(NOTE[n2]){
+    var lab = textSprite(NOTE[n2], 22, 'rgba(220,216,200,0.8)');
+    lab.position.copy(nodePos(0,n2)).multiplyScalar(1.0).add(
+      nodePos(0,n2).clone().setY(0).normalize().multiplyScalar(0.30)).setY(nodePos(0,n2).y+0.03);
+    scene.add(lab);
+  }
+}
+var lab3 = textSprite('3 · first shock — third force fills the first interval', 21, 'rgba(255,180,94,0.95)');
+lab3.position.copy(nodePos(0,3)).add(nodePos(0,3).clone().setY(0).normalize().multiplyScalar(0.62));
+scene.add(lab3);
+var lab6 = textSprite('6 · second shock — third force placed in advance', 21, 'rgba(255,180,94,0.95)');
+lab6.position.copy(nodePos(0,6)).add(nodePos(0,6).clone().setY(0).normalize().multiplyScalar(0.72));
+scene.add(lab6);
+
+// ---------- triangles (Law of Three) ----------
+function triangleAt(L, bright){
+  var pts=[helixPos(L), nodePos(L,3), nodePos(L,6), helixPos(L+1)];
+  var geo=new THREE.BufferGeometry().setFromPoints(pts);
+  var mat=new THREE.LineDashedMaterial({color:COL.gold, transparent:true,
+    opacity: bright?0.95:0.42, dashSize:0.05, gapSize:0.06});
+  var line=new THREE.Line(geo,mat);
+  line.computeLineDistances();
+  return line;
+}
+for(var L2=0;L2<TURNS;L2++) scene.add(triangleAt(L2,false));
+// active triangle overlay (follows the climber's level)
+var activeTri = triangleAt(0,true); scene.add(activeTri);
+// three cycling force-glows on the active triangle
+var forceGlow = [glowSprite(texGold,0.55), glowSprite(texGold,0.55), glowSprite(texGold,0.55)];
+forceGlow.forEach(function(s){scene.add(s);});
+function setActiveTriangle(L){
+  var a=helixPos(L), b=nodePos(L,3), c=nodePos(L,6), d=helixPos(L+1);
+  activeTri.geometry.setFromPoints([a,b,c,d]);
+  activeTri.computeLineDistances();
+  forceGlow[0].position.copy(a); forceGlow[1].position.copy(b); forceGlow[2].position.copy(c);
+}
+setActiveTriangle(0);
+// the triangle RUNNER: circles the level in unison with the climber
+var triRunner = glowSprite(texGold, 0.55);
+scene.add(triRunner);
+var triCore = new THREE.Mesh(new THREE.OctahedronGeometry(0.06),
+  new THREE.MeshBasicMaterial({color:0xfff0cd}));
+scene.add(triCore);
+function triPos(u){
+  var L=Math.floor(u), f=u-L, from, to, t;
+  if(f < 1/3){      from=helixPos(L);   to=nodePos(L,3); t=f*3; }
+  else if(f < 2/3){ from=nodePos(L,3);  to=nodePos(L,6); t=(f-1/3)*3; }
+  else {            from=nodePos(L,6);  to=helixPos(L+1); t=(f-2/3)*3; }
+  return new THREE.Vector3().lerpVectors(from, to, t);
+}
+
+// ---------- hexad web (inner lines, per level) ----------
+var HEX = [1,4,2,8,5,7];
+for(var L3=0;L3<TURNS;L3++){
+  var segs=[];
+  for(var i=0;i<6;i++){
+    segs.push(nodePos(L3,HEX[i]), nodePos(L3,HEX[(i+1)%6]));
+  }
+  var g=new THREE.BufferGeometry().setFromPoints(segs);
+  var web=new THREE.LineSegments(g,
+    new THREE.LineDashedMaterial({color:0x9aa3d6, transparent:true, opacity:0.55,
+      dashSize:0.05, gapSize:0.06}));
+  web.computeLineDistances();
+  scene.add(web);
+}
+
+// ---------- the climber (Law of Octaves traveler) ----------
+var climber = glowSprite(texWarm, 0.85);
+scene.add(climber);
+var climberCore = new THREE.Mesh(new THREE.SphereGeometry(0.07,16,16),
+  new THREE.MeshBasicMaterial({color:0xfff6de}));
+scene.add(climberCore);
+var U = 0;                 // position along helix in turns
+var speedFactor = 1;
+function setSpeed(d){
+  speedFactor = Math.max(0.25, Math.min(4, Math.round((speedFactor + d)*100)/100));
+  document.getElementById('speedval').innerHTML =
+    (speedFactor % 1 === 0 ? speedFactor : speedFactor.toFixed(2).replace(/0$/,'')) + '&times;';
+}
+document.getElementById('spup').addEventListener('click', function(){ setSpeed(+0.25); });
+document.getElementById('spdown').addEventListener('click', function(){ setSpeed(-0.25); });
+window.addEventListener('keydown', function(e){
+  if(e.key === '+' || e.key === '=') setSpeed(+0.25);
+  if(e.key === '-' || e.key === '_') setSpeed(-0.25);
+});
+var octaveShown = 1;
+var crossed = {s3:false, s6:false, s86:false};
+
+// constant pace throughout; the intervals are marked by the shocks, not by stalling
+function speedMult(frac){ return 1; }
+
+// ---------- the hexad comet (inner circulation) ----------
+var comet = glowSprite(texCool, 0.6);
+scene.add(comet);
+var trailN = 46;
+var trailPts = [];
+for(var t0=0;t0<trailN;t0++) trailPts.push(new THREE.Vector3());
+var trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
+var trail = new THREE.Line(trailGeo,
+  new THREE.LineBasicMaterial({color:COL.comet, transparent:true, opacity:0.4}));
+scene.add(trail);
+// The circulation's SYNC POINTS: it jumps ahead, then returns — and every
+// RETURN lands exactly as the climber (and triangle runner) arrive there.
+// Waypoints in ninths within a level: touch 1 at 1 (with the climber),
+// jump ahead to 4, RETURN to 2 at 2 (with the climber), ahead to 8,
+// RETURN to 5 at 5 (with the climber), ahead to 7, then the long return
+// to the NEXT level's 1 — landing at ninth 1 of the next octave.
+// mid-waypoints (4, 8, 7) are timed by chord length, so speed is uniform
+// within each leg while the RETURNS still land exactly with the climber
+function dlen(a,b){ return a.distanceTo ? a.distanceTo(b) :
+  Math.hypot(a.x-b.x, a.y-b.y, a.z-b.z); }
+var _lA1=dlen(nodePos(0,1),nodePos(0,4)), _lA2=dlen(nodePos(0,4),nodePos(0,2));
+var _lB1=dlen(nodePos(0,2),nodePos(0,8)), _lB2=dlen(nodePos(0,8),nodePos(0,5));
+var _lC1=dlen(nodePos(0,5),nodePos(0,7)), _lC2=dlen(nodePos(0,7),nodePos(1,1));
+var WP4 = 1 + 1*_lA1/(_lA1+_lA2);
+var WP8 = 2 + 3*_lB1/(_lB1+_lB2);
+var WP7 = 5 + 5*_lC1/(_lC1+_lC2);
+function cometPosition(u){
+  var L=Math.floor(u), nn=(u-L)*9, from, to, t;
+  if(nn < 1){
+    if(L===0) return nodePos(0,1).clone();     // waiting at 1 before the first pass
+    t=(nn + (9-WP7))/(10-WP7); from=nodePos(L-1,7); to=nodePos(L,1);
+  }
+  else if(nn < WP4){ t=(nn-1)/(WP4-1);   from=nodePos(L,1); to=nodePos(L,4); }
+  else if(nn < 2){   t=(nn-WP4)/(2-WP4); from=nodePos(L,4); to=nodePos(L,2); }
+  else if(nn < WP8){ t=(nn-2)/(WP8-2);   from=nodePos(L,2); to=nodePos(L,8); }
+  else if(nn < 5){   t=(nn-WP8)/(5-WP8); from=nodePos(L,8); to=nodePos(L,5); }
+  else if(nn < WP7){ t=(nn-5)/(WP7-5);   from=nodePos(L,5); to=nodePos(L,7); }
+  else {             t=(nn-WP7)/(10-WP7); from=nodePos(L,7); to=nodePos(L+1,1); }
+  return new THREE.Vector3().lerpVectors(from, to, t);
+}
+
+// ---------- transient effects (rings, filaments) ----------
+var effects=[];
+function ring(pos, color, size){
+  var s=glowSprite(texWarm, size||0.4, color);
+  s.position.copy(pos); scene.add(s);
+  effects.push({obj:s, ttl:0.9, life:0.9, grow:2.6});
+}
+function filament(a,b){
+  var g=new THREE.BufferGeometry().setFromPoints([a,b]);
+  var l=new THREE.Line(g, new THREE.LineBasicMaterial({color:COL.emberHot,
+    transparent:true, opacity:1, blending:THREE.AdditiveBlending}));
+  scene.add(l);
+  effects.push({obj:l, ttl:1.0, life:1.0});
+}
+var callEl=document.getElementById('shockcall');
+var callTimer=null;
+function shockCall(text){
+  callEl.textContent=text; callEl.style.opacity=1;
+  if(callTimer) clearTimeout(callTimer);
+  callTimer=setTimeout(function(){callEl.style.opacity=0;}, 2100);
+}
+
+// ---------- animation ----------
+var clock=new THREE.Clock(); var clockTime=0;
+function animate(){
+  requestAnimationFrame(animate);
+  var dt=Math.min(clock.getDelta(),0.05); clockTime+=dt;
+
+  updateCamera();
+
+  // climber motion
+  var level=Math.floor(U); var frac=U-level;
+  U += dt * 0.062 * speedFactor * speedMult(frac);
+  var nl=Math.floor(U), nf=U-nl;
+  // events on threshold crossings
+  if(nl===level){
+    if(!crossed.s3 && frac<0.333 && nf>=0.333){
+      crossed.s3=true;
+      ring(nodePos(level,3), COL.emberHot, 0.5);
+      shockCall('the first interval — third force arrives: the first shock');
+    }
+    if(!crossed.s6 && frac<0.667 && nf>=0.667){
+      crossed.s6=true;
+      ring(nodePos(level,6), COL.ember, 0.35);
+      shockCall('point 6 — the second shock is prepared in advance');
+    }
+    // the circulation's RETURNS land with the climber: rings mark the meetings
+    if(frac<1/9 && nf>=1/9 && level>0) ring(nodePos(level,1), COL.comet, 0.30);
+    if(frac<2/9 && nf>=2/9) ring(nodePos(level,2), COL.comet, 0.30);
+    if(frac<5/9 && nf>=5/9) ring(nodePos(level,5), COL.comet, 0.30);
+    if(!crossed.s86 && frac<0.952 && nf>=0.952){
+      crossed.s86=true;
+      filament(nodePos(level,6), helixPos(level+0.965));
+      ring(helixPos(level+0.965), COL.emberHot, 0.5);
+      shockCall('the second interval — the prepared shock fires');
+    }
+  } else {
+    // crossed do into the next octave
+    ring(helixPos(Math.min(nl,TURNS)), 0xfff6de, 0.7);
+    ring(nodePos(Math.min(nl,TURNS-1),1), COL.comet, 0.30);
+    crossed={s3:false,s6:false,s86:false};
+    octaveShown = Math.min(nl+1, TURNS);
+    document.getElementById('octnum').textContent=['I','II','III','IV'][Math.min(nl,3)];
+    setActiveTriangle(Math.min(nl,TURNS-1));
+  }
+  if(U>=TURNS){ U=0; octaveShown=1;
+    shockCall('do — the climb begins again');
+    document.getElementById('octnum').textContent='I';
+    setActiveTriangle(0);
+    crossed={s3:false,s6:false,s86:false};
+    for(var q=0;q<trailN;q++) trailPts[q].copy(nodePos(0,1));
+  }
+  var cp=helixPos(U);
+  climber.position.copy(cp); climberCore.position.copy(cp);
+  climber.material.opacity = 1;
+
+  // triangle vertices blaze as the runner (and climber) arrive: do at 0/1, 3 at 1/3, 6 at 2/3
+  var lf = U - Math.floor(U);
+  var vPeaks = [0, 1/3, 2/3];                // vertex order: [do, 3, 6]
+  for(var i=0;i<3;i++){
+    var dd = Math.abs(lf - vPeaks[i]); dd = Math.min(dd, 1 - dd);
+    var b = Math.max(0, 1 - Math.pow(dd/0.14, 2));
+    forceGlow[i].material.opacity = 0.12 + 0.78*b;
+    forceGlow[i].scale.setScalar(0.35 + 0.45*b);
+  }
+  // move the triangle runner in unison with the climber
+  var tpos = triPos(U);
+  triRunner.position.copy(tpos); triCore.position.copy(tpos);
+  // shock-point breathing
+  pulse36.forEach(function(p){
+    var s=1+0.16*Math.sin(clockTime*2.2+p.phase);
+    p.mesh.scale.setScalar(s);
+  });
+
+  // the hexad comet: waypoint schedule shared with the climber's clock
+  var cpos = cometPosition(U);
+  comet.position.copy(cpos);
+  trailPts.pop(); trailPts.unshift(cpos.clone());
+  trailGeo.setFromPoints(trailPts);
+
+  // transient effects decay
+  for(var j=effects.length-1;j>=0;j--){
+    var fx=effects[j]; fx.ttl-=dt;
+    var k=Math.max(fx.ttl/fx.life,0);
+    if(fx.obj.material) fx.obj.material.opacity=k;
+    if(fx.grow && fx.obj.scale) fx.obj.scale.setScalar(fx.obj.scale.x*(1+dt*fx.grow));
+    if(fx.ttl<=0){ scene.remove(fx.obj); effects.splice(j,1); }
+  }
+
+  renderer.render(scene,camera);
+}
+animate();
+})();
+</script>
+</body>
+</html>
