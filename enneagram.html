@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>The Living Enneagram</title>
 <style>
   :root{
     --indigo-deep:#151936; --indigo:#1c2144; --indigo-up:#2a3060;
     --gold:#e8c88c; --ember:#ffb45e; --moon:#dcd8c8; --slate:#8a91b8;
   }
-  html,body{margin:0;padding:0;height:100%;overflow:hidden;
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;position:fixed;width:100%;overscroll-behavior:none;
     background:radial-gradient(ellipse at 50% 38%, var(--indigo-up) 0%, var(--indigo) 45%, var(--indigo-deep) 100%);
     font-family: Georgia, 'Times New Roman', serif; color:var(--moon);}
   #scene{position:fixed;inset:0;display:block;touch-action:none;}
@@ -20,7 +20,16 @@
   #title{font-size:32px;font-weight:normal;color:var(--gold);letter-spacing:.02em;line-height:1.1;margin:0 0 8px 0;}
   #subtitle{font-style:italic;font-size:14px;color:var(--moon);opacity:.75;line-height:1.5;}
   #legend{bottom:30px;left:34px;max-width:330px;background:rgba(21,25,54,.72);
-    border-top:1px solid rgba(232,200,140,.45);padding:16px 18px 14px;backdrop-filter:blur(6px);}
+    border-top:1px solid rgba(232,200,140,.45);padding:16px 18px 14px;backdrop-filter:blur(6px);
+    transition:transform .35s ease, opacity .35s ease;}
+  #legend.collapsed{transform:translateX(-120%);opacity:0;pointer-events:none;}
+  #legendtab{position:fixed;left:0;bottom:140px;z-index:12;pointer-events:auto;
+    writing-mode:vertical-rl;padding:14px 7px;cursor:pointer;
+    background:rgba(21,25,54,.85);color:var(--gold);
+    border:1px solid rgba(232,200,140,.5);border-left:none;border-radius:0 6px 6px 0;
+    font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:10px;
+    letter-spacing:.22em;text-transform:uppercase;transition:color .3s, box-shadow .3s;}
+  #legendtab.pulse{color:var(--ember);box-shadow:0 0 20px rgba(255,180,94,.75);}
   #legend div{font-size:12.5px;line-height:1.65;opacity:.92;}
   #legend b{color:var(--gold);font-weight:normal;}
   #legend .ember{color:var(--ember);}
@@ -56,6 +65,7 @@
   <h1 id="title">The Living Enneagram</h1>
   <div id="subtitle">The Law of Octaves climbs the spiral. The Law of Three pulses through the triangle. The inner circulation weaves between the levels.</div>
 </div>
+<button id="legendtab" aria-label="Toggle legend">Legend</button>
 <div class="hud" id="legend">
   <div id="shockcall"></div>
   <div><b>Gold thread</b> — the octave, do to do, one turn per level</div>
@@ -73,13 +83,13 @@
     <button id="spup" aria-label="Faster">+</button>
   </div>
 </div>
-<div class="hud" id="hint">Drag up or down to tilt &nbsp;&middot;&nbsp; Pinch or scroll to zoom &nbsp;&middot;&nbsp; +/&minus; speed &nbsp;&middot;&nbsp; v17</div>
+<div class="hud" id="hint">Drag up or down to tilt &nbsp;&middot;&nbsp; Pinch or scroll to zoom &nbsp;&middot;&nbsp; +/&minus; speed &nbsp;&middot;&nbsp; v18</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
 'use strict';
-console.log('living-enneagram build v17');
+console.log('living-enneagram build v18');
 // ---------- constants ----------
 var TURNS = 4;           // octave levels
 var R = 2.2;             // helix radius
@@ -102,7 +112,10 @@ var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
 // custom orbit (r128 has no bundled OrbitControls)
 var theta = Math.PI/2, phi = 1.05, lastInteract = -10;   // yaw fixed: front view only
 // start zoomed to fit the whole diagram: vertical fov 46°, so visible height ≈ 0.849·r
-var aspect0 = window.innerWidth / Math.max(window.innerHeight, 1);
+var _vv0 = window.visualViewport;
+var _w0 = _vv0 ? _vv0.width : window.innerWidth;
+var _h0 = _vv0 ? _vv0.height : window.innerHeight;
+var aspect0 = _w0 / Math.max(_h0, 1);
 var radius = Math.min(48, Math.max(8.8/0.849, 7.2/(0.849*aspect0)));
 var target = new THREE.Vector3(0, CENTER_Y, 0);  // locked: always projects to viewport center
 var dragging=false, px=0, py=0;
@@ -158,14 +171,24 @@ canvas.addEventListener('pointermove', function(e){
 canvas.addEventListener('wheel', function(e){
   e.preventDefault(); radius += e.deltaY * 0.01; lastInteract = clockTime;
 },{passive:false});
+function vpSize(){
+  var vv = window.visualViewport;
+  return vv ? {w: Math.round(vv.width), h: Math.round(vv.height)}
+            : {w: window.innerWidth, h: window.innerHeight};
+}
 function resize(){
-  var w=window.innerWidth,h=window.innerHeight;
+  var s=vpSize(), w=s.w, h=s.h;
   renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
   // keep the whole diagram in frame for the current window shape
   var need = Math.max(8.8/0.849, 7.2/(0.849*(w/Math.max(h,1))));
   if(radius < need) radius = Math.min(48, need);
 }
-window.addEventListener('resize', resize); resize();
+window.addEventListener('resize', resize);
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', resize);
+  window.visualViewport.addEventListener('scroll', resize);
+}
+resize();
 
 // ---------- helpers ----------
 // enneagram point n (1..9) on level L -> position on helix; u = L + n/9
@@ -413,12 +436,26 @@ function filament(a,b){
   scene.add(l);
   effects.push({obj:l, ttl:1.0, life:1.0});
 }
+var legendEl=document.getElementById('legend');
+var legendTab=document.getElementById('legendtab');
+function setLegend(open){
+  legendEl.classList.toggle('collapsed', !open);
+  legendTab.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+legendTab.addEventListener('click', function(){
+  setLegend(legendEl.classList.contains('collapsed'));
+});
+setLegend(window.innerWidth > 900);
 var callEl=document.getElementById('shockcall');
 var callTimer=null;
 function shockCall(text){
   callEl.textContent=text; callEl.style.opacity=1;
   if(callTimer) clearTimeout(callTimer);
   callTimer=setTimeout(function(){callEl.style.opacity=0;}, 2100);
+  if(legendEl.classList.contains('collapsed')){
+    legendTab.classList.add('pulse');
+    setTimeout(function(){legendTab.classList.remove('pulse');}, 1600);
+  }
 }
 
 // ---------- animation ----------
