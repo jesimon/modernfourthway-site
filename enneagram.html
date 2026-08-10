@@ -12,7 +12,7 @@
   html,body{margin:0;padding:0;height:100%;overflow:hidden;position:fixed;width:100%;overscroll-behavior:none;
     background:radial-gradient(ellipse at 50% 38%, var(--indigo-up) 0%, var(--indigo) 45%, var(--indigo-deep) 100%);
     font-family: Georgia, 'Times New Roman', serif; color:var(--moon);}
-  #scene{position:fixed;inset:0;display:block;touch-action:none;}
+  #scene{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;}
   .hud{position:fixed;z-index:10;pointer-events:none;}
   #titleblock{top:28px;left:34px;max-width:340px;}
   #eyebrow{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:10px;letter-spacing:.32em;
@@ -83,13 +83,13 @@
     <button id="spup" aria-label="Faster">+</button>
   </div>
 </div>
-<div class="hud" id="hint">Drag up or down to tilt &nbsp;&middot;&nbsp; Pinch or scroll to zoom &nbsp;&middot;&nbsp; +/&minus; speed &nbsp;&middot;&nbsp; v18</div>
+<div class="hud" id="hint">Drag up or down to tilt &nbsp;&middot;&nbsp; Pinch or scroll to zoom &nbsp;&middot;&nbsp; +/&minus; speed &nbsp;&middot;&nbsp; v19</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
 'use strict';
-console.log('living-enneagram build v18');
+console.log('living-enneagram build v19');
 // ---------- constants ----------
 var TURNS = 4;           // octave levels
 var R = 2.2;             // helix radius
