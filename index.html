@@ -9,7 +9,7 @@
 :root{--ink:#151936;--indigo:#1c2144;--panel:#232952;--gold:#e8c88c;--gold-dim:#b39a67;
 --ember:#ffb45e;--moon:#efe9da;--body:#d6d2c4;--slate:#8a91b8;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;scroll-padding-top:170px;}
 body{background:var(--ink);color:var(--body);font-family:Georgia,'Times New Roman',serif;line-height:1.75;font-size:17px;}
 a{color:var(--gold);text-decoration:none;}
 a:hover{text-decoration:underline;}
@@ -189,6 +189,17 @@ section h2{font-size:26px;}
   });
   lb.addEventListener('click', closeLb);
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLb(); });
+})();
+</script>
+<script>
+(function(){
+  var nav = document.querySelector('nav');
+  function setPad(){
+    document.documentElement.style.scrollPaddingTop = (nav.offsetHeight + 22) + 'px';
+  }
+  window.addEventListener('resize', setPad);
+  window.addEventListener('load', setPad);
+  setPad();
 })();
 </script>
 </body>
