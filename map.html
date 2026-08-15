@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>The Great Map — The Modern Fourth Way</title>
+<style>
+:root{--ink:#151936;--panel:#1c2144;--gold:#e8c88c;--ember:#ffb45e;--moon:#efe9da;--slate:#8a91b8;}
+html,body{margin:0;padding:0;height:100%;width:100%;position:fixed;overflow:hidden;
+overscroll-behavior:none;background:radial-gradient(ellipse at 50% 35%, #232952 0%, var(--ink) 55%, #101328 100%);
+font-family:Georgia,'Times New Roman',serif;}
+#stage{position:fixed;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;}
+#stage.dragging{cursor:grabbing;}
+#stage svg{width:100%;height:100%;display:block;}
+.hud{position:fixed;z-index:10;pointer-events:none;}
+#topbar{top:0;left:0;right:0;padding:14px 20px;display:flex;justify-content:space-between;align-items:baseline;
+background:linear-gradient(rgba(16,19,40,.85), rgba(16,19,40,0));}
+#topbar a{pointer-events:auto;color:var(--gold);text-decoration:none;font-size:14px;letter-spacing:.04em;}
+#topbar a:hover{text-decoration:underline;}
+#topbar .ttl{color:var(--moon);font-style:italic;font-size:14px;opacity:.85;}
+#hint{bottom:18px;left:20px;font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:10px;
+letter-spacing:.14em;text-transform:uppercase;color:var(--slate);max-width:60vw;line-height:1.8;}
+#controls{bottom:16px;right:16px;display:flex;flex-direction:column;gap:8px;pointer-events:auto;}
+#controls button{width:46px;height:46px;border-radius:8px;background:rgba(21,25,54,.85);
+border:1px solid rgba(232,200,140,.55);color:var(--gold);font-size:20px;line-height:1;cursor:pointer;
+font-family:Georgia,serif;backdrop-filter:blur(4px);}
+#controls button:active{background:rgba(232,200,140,.25);}
+#controls button.fit{font-size:11px;letter-spacing:.08em;font-family:Avenir,'Segoe UI',system-ui,sans-serif;}
+#zoomlvl{position:fixed;bottom:22px;right:74px;color:var(--slate);font-size:11px;
+font-family:Avenir,'Segoe UI',system-ui,sans-serif;letter-spacing:.06em;}
+@media (max-width:640px){ #hint{display:none;} #topbar .ttl{display:none;} }
+</style>
+</head>
+<body>
+<div id="stage"><svg id="mapsvg" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 2600 3400">
+  <defs>
+    <style>
+      .st0 {
+        font-size: 9px;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st15, .st16, .st17, .st18, .st19, .st20, .st21, .st22, .st23, .st24, .st25, .st26, .st27, .st28, .st29, .st30, .st31, .st32, .st33, .st34, .st35, .st36, .st37, .st38, .st39, .st40, .st41, .st42, .st43, .st44, .st45, .st46, .st47, .st48, .st49 {
+        isolation: isolate;
+      }
+
+      .st0, .st1, .st2, .st4, .st8, .st10, .st11, .st13, .st23, .st25, .st27, .st29, .st31, .st39, .st40, .st41, .st43, .st46, .st47, .st48 {
+        font-family: Georgia, Georgia;
+      }
+
+      .st0, .st2, .st11, .st20, .st25, .st29, .st31, .st50, .st39, .st41, .st42, .st47, .st48 {
+        fill: #efe9da;
+      }
+
+      .st1, .st3, .st9, .st10, .st12, .st51, .st14, .st22, .st36 {
+        fill: #ffb45e;
+      }
+
+      .st1, .st4, .st21, .st36, .st47 {
+        font-size: 13.5px;
+      }
+
+      .st2, .st5 {
+        font-size: 14px;
+      }
+
+      .st3, .st5, .st6, .st9, .st12, .st14, .st15, .st20, .st22, .st33, .st34, .st36, .st37, .st42, .st44 {
+        font-family: Georgia-Italic, Georgia;
+        font-style: italic;
+      }
+
+      .st3, .st13, .st23, .st25 {
+        font-size: 11.5px;
+      }
+
+      .st4 {
+        fill: #5a6190;
+      }
+
+      .st5, .st6, .st8, .st13, .st16, .st27, .st33, .st34, .st37, .st43, .st44, .st46 {
+        fill: #8a91b8;
+      }
+
+      .st6, .st14, .st39, .st46 {
+        font-size: 13px;
+      }
+
+      .st7 {
+        font-size: 16.5px;
+      }
+
+      .st7, .st15, .st21, .st24, .st28, .st30, .st32, .st35, .st45 {
+        fill: #e8c88c;
+      }
+
+      .st7, .st16, .st21, .st24, .st28, .st30, .st32, .st35, .st45 {
+        font-family: Georgia-Bold, Georgia;
+        font-weight: 700;
+      }
+
+      .st8, .st31, .st34 {
+        font-size: 11px;
+      }
+
+      .st52, .st53, .st54, .st55, .st56, .st57, .st58, .st18, .st59, .st60, .st19, .st61, .st62, .st63, .st64, .st65, .st66, .st67, .st49 {
+        fill: none;
+      }
+
+      .st52, .st53, .st54, .st58, .st59, .st64, .st67, .st49 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .st52, .st53, .st18, .st68, .st63, .st69, .st70, .st67 {
+        stroke: #ffb45e;
+      }
+
+      .st52, .st54, .st58, .st61, .st71, .st50, .st63, .st66 {
+        stroke-width: 1.4px;
+      }
+
+      .st52, .st63 {
+        stroke-dasharray: 3 3;
+      }
+
+      .st9, .st10, .st16, .st40, .st44 {
+        font-size: 12px;
+      }
+
+      .st53 {
+        stroke-dasharray: 5 5;
+      }
+
+      .st53, .st38 {
+        stroke-width: 1.6px;
+      }
+
+      .st54 {
+        stroke-dasharray: 4 5;
+      }
+
+      .st54, .st55, .st56, .st61 {
+        stroke: #9aa3d6;
+      }
+
+      .st11 {
+        font-size: 15.5px;
+      }
+
+      .st12, .st29 {
+        font-size: 12.5px;
+      }
+
+      .st55 {
+        stroke-dasharray: 5 4;
+      }
+
+      .st55, .st51, .st18, .st72, .st65 {
+        stroke-width: 1.2px;
+      }
+
+      .st51, .st59, .st60, .st73, .st71, .st72, .st62, .st50, .st38, .st64, .st49 {
+        stroke: #e8c88c;
+      }
+
+      .st56 {
+        stroke-dasharray: 2 3;
+      }
+
+      .st74, .st73, .st71, .st72, .st68 {
+        fill: #151936;
+      }
+
+      .st57, .st58, .st17, .st19, .st26, .st75, .st65, .st66 {
+        stroke: #8a7a55;
+      }
+
+      .st15 {
+        font-size: 34px;
+      }
+
+      .st17 {
+        opacity: 1;
+        stroke-width: 1.1px;
+      }
+
+      .st17, .st38 {
+        fill: #1c2144;
+      }
+
+      .st76 {
+        fill: url(#radial-gradient);
+      }
+
+      .st18 {
+        opacity: .9;
+      }
+
+      .st59, .st73 {
+        stroke-width: 1.8px;
+      }
+
+      .st60, .st64 {
+        stroke-width: 3px;
+      }
+
+      .st19 {
+        opacity: .7;
+      }
+
+      .st20 {
+        font-size: 27px;
+      }
+
+      .st22, .st24, .st37, .st41, .st43 {
+        font-size: 14.5px;
+      }
+
+      .st23, .st40 {
+        fill: #9aa3d6;
+      }
+
+      .st26 {
+        opacity: .8;
+      }
+
+      .st26, .st75, .st69, .st70 {
+        fill: #232952;
+      }
+
+      .st27, .st45 {
+        font-size: 18px;
+      }
+
+      .st28 {
+        font-size: 20px;
+      }
+
+      .st30, .st48 {
+        font-size: 16px;
+      }
+
+      .st32 {
+        font-size: 54px;
+        letter-spacing: 0em;
+      }
+
+      .st62, .st67 {
+        stroke-width: 2px;
+      }
+
+      .st33 {
+        font-size: 16.2px;
+      }
+
+      .st68 {
+        stroke-width: 2.2px;
+      }
+
+      .st35, .st42 {
+        font-size: 22px;
+      }
+
+      .st38 {
+        opacity: 1;
+      }
+
+      .st69 {
+        stroke-width: 2.6px;
+      }
+
+      .st70 {
+        stroke-width: 2.4px;
+      }
+
+      .st49 {
+        opacity: .9;
+        stroke-width: 3.4px;
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="436.3" cy="2132" fx="436.3" fy="2132" r=".8" gradientTransform="translate(-1133164 7250068) scale(2600 -3400)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#262c58"/>
+      <stop offset=".6" stop-color="#151936"/>
+      <stop offset="1" stop-color="#101328"/>
+    </radialGradient>
+  </defs>
+  <rect class="st74" width="2600" height="3400"/>
+  <rect class="st76" width="2600" height="3400"/>
+  <text class="st32" transform="translate(526.8 88)"><tspan x="0" y="0">THE GREAT MAP OF THE MODERN FOURTH WAY</tspan></text>
+  <text class="st20" transform="translate(931.9 134)"><tspan x="0" y="0">Waking up in ordinary life — the whole journey in one figure</tspan></text>
+  <text class="st27" transform="translate(1007.979 170)"><tspan x="0" y="0">Every concept, law, practice, and process of the book — and nothing more</tspan></text>
+  <path class="st49" d="M300,640c120,760,400,1810,1000,2120"/>
+  <path class="st49" d="M1300,2760c600-310,880-1360,1000-2160"/>
+  <circle class="st68" cx="2372" cy="536" r="8"/>
+  <line class="st18" x1="2372" y1="536" x2="2388" y2="536"/>
+  <line class="st18" x1="2372" y1="536" x2="2383.3" y2="547.3"/>
+  <line class="st18" x1="2372" y1="536" x2="2372" y2="552"/>
+  <line class="st18" x1="2372" y1="536" x2="2360.7" y2="547.3"/>
+  <line class="st18" x1="2372" y1="536" x2="2356" y2="536"/>
+  <line class="st18" x1="2372" y1="536" x2="2360.7" y2="524.7"/>
+  <line class="st18" x1="2372" y1="536" x2="2372" y2="520"/>
+  <line class="st18" x1="2372" y1="536" x2="2383.3" y2="524.7"/>
+  <text class="st36" transform="translate(2319.77 588)"><tspan x="0" y="0">do — one level up</tspan></text>
+  <circle class="st73" cx="432" cy="1030" r="6.5"/>
+  <text class="st43" transform="translate(208.4126 1035)"><tspan x="0" y="0">IDENTIFICATION — attention</tspan></text>
+  <text class="st43" transform="translate(247.7 1054.4301)"><tspan x="0" y="0">flows out and is captured</tspan></text>
+  <circle class="st73" cx="520" cy="1370" r="6.5"/>
+  <text class="st43" transform="translate(272.135 1375)"><tspan x="0" y="0">THE DREAM — waking sleep, eyes</tspan></text>
+  <text class="st43" transform="translate(464.3237 1394.4301)"><tspan x="0" y="0">open</tspan></text>
+  <circle class="st73" cx="600" cy="1558" r="6.5"/>
+  <text class="st43" transform="translate(369.8564 1563)"><tspan x="0" y="0">the crowd CHURNS — many I’s,</tspan></text>
+  <text class="st43" transform="translate(427.198 1582.4301)"><tspan x="0" y="0">each calling itself “you”</tspan></text>
+  <circle class="st73" cx="958" cy="2290" r="6.5"/>
+  <text class="st43" transform="translate(767.7385 2295)"><tspan x="0" y="0">BUFFERS seal the cracks;</tspan></text>
+  <text class="st43" transform="translate(748.332 2314.4299)"><tspan x="0" y="0">CONSCIENCE waits beneath</tspan></text>
+  <text class="st33" transform="translate(338.7 646.9) rotate(79.5) skewX(-.6)"><tspan x="0" y="0">THE DESCENT — Part I: the situation</tspan></text>
+  <circle class="st70" cx="1990" cy="2070" r="11"/>
+  <text class="st7" transform="translate(2014 2060)"><tspan x="0" y="0">MAN 4</tspan></text>
+  <text class="st39" transform="translate(2014 2080)"><tspan x="0" y="0">the aim; the deputy</tspan></text>
+  <text class="st39" transform="translate(2014 2097.4199)"><tspan x="0" y="0">steward holds the empty</tspan></text>
+  <text class="st39" transform="translate(2014 2114.8401)"><tspan x="0" y="0">seat</tspan></text>
+  <circle class="st70" cx="2120" cy="1690" r="11"/>
+  <text class="st7" transform="translate(2144 1680)"><tspan x="0" y="0">MAN 5</tspan></text>
+  <text class="st39" transform="translate(2144 1700)"><tspan x="0" y="0">unity — the permanent I</tspan></text>
+  <circle class="st70" cx="2218" cy="1310" r="11"/>
+  <text class="st7" transform="translate(2242 1300)"><tspan x="0" y="0">MAN 6</tspan></text>
+  <text class="st39" transform="translate(2242 1320)"><tspan x="0" y="0">every connection live —</tspan></text>
+  <text class="st39" transform="translate(2242 1337.42)"><tspan x="0" y="0">the threshold</tspan></text>
+  <circle class="st70" cx="2290" cy="950" r="11"/>
+  <text class="st7" transform="translate(2314 940)"><tspan x="0" y="0">MAN 7</tspan></text>
+  <text class="st39" transform="translate(2314 960)"><tspan x="0" y="0">CRYSTALLIZED — one will;</tspan></text>
+  <text class="st39" transform="translate(2314 977.4199)"><tspan x="0" y="0">what is built cannot be</tspan></text>
+  <text class="st39" transform="translate(2314 994.8401)"><tspan x="0" y="0">taken</tspan></text>
+  <text class="st5" transform="translate(2030 2226)"><tspan x="0" y="0">THE ASCENT — crystallization, rung by rung</tspan></text>
+  <rect class="st17" x="360" y="300" width="800" height="272" rx="16" ry="16"/>
+  <text class="st35" transform="translate(400 344)"><tspan x="0" y="0">IN THE BEGINNING</tspan></text>
+  <text class="st11" transform="translate(400 382)"><tspan x="0" y="0">THIS — the one awareness, prior to every story. What you</tspan></text>
+  <text class="st11" transform="translate(400 402.8)"><tspan x="0" y="0">are was never born into the machine; it only fell asleep</tspan></text>
+  <text class="st11" transform="translate(400 423.5)"><tspan x="0" y="0">inside one.</tspan></text>
+  <text class="st37" transform="translate(400 454.3)"><tspan x="0" y="0">The descent is not a mistake. Every complete map draws the</tspan></text>
+  <text class="st37" transform="translate(400 473.7)"><tspan x="0" y="0">same figure — down, a bottom, a turn, up — and the sleep is</tspan></text>
+  <text class="st37" transform="translate(400 493.2)"><tspan x="0" y="0">only the finished first half.</tspan></text>
+  <rect class="st17" x="1440" y="300" width="880" height="272" rx="16" ry="16"/>
+  <text class="st35" transform="translate(1480 344)"><tspan x="0" y="0">THE RETURN — AND THE GIFT</tspan></text>
+  <text class="st41" transform="translate(1480 382)"><tspan x="0" y="0">At the edge of the map, effort meets its limit and the doer is</tspan></text>
+  <text class="st41" transform="translate(1480 401.4299)"><tspan x="0" y="0">seen through. Who am I? — the seeker turns, and finds only THIS.</tspan></text>
+  <text class="st41" transform="translate(1480 420.86)"><tspan x="0" y="0">What climbed was awareness all along; there was never anywhere to</tspan></text>
+  <text class="st41" transform="translate(1480 440.29)"><tspan x="0" y="0">go.</tspan></text>
+  <text class="st22" transform="translate(1480 467.72)"><tspan x="0" y="0">Yet the journey was not for nothing: a crystallized being comes</tspan></text>
+  <text class="st22" transform="translate(1480 487.15)"><tspan x="0" y="0">back — experience made permanent, awareness awake inside a life.</tspan></text>
+  <circle class="st62" cx="1300" cy="436" r="104"/>
+  <path class="st53" d="M1300,332l90,156h-180l90-156Z"/>
+  <path class="st54" d="M1367,356l-31,178,66-116-169-62,31,178-66-116,169-62"/>
+  <circle class="st72" cx="1366.8" cy="356.3" r="4.2"/>
+  <circle class="st72" cx="1402.4" cy="417.9" r="4.2"/>
+  <circle class="st51" cx="1390.1" cy="488" r="4.2"/>
+  <circle class="st72" cx="1335.6" cy="533.7" r="4.2"/>
+  <circle class="st72" cx="1264.4" cy="533.7" r="4.2"/>
+  <circle class="st51" cx="1209.9" cy="488" r="4.2"/>
+  <circle class="st72" cx="1197.6" cy="417.9" r="4.2"/>
+  <circle class="st72" cx="1233.2" cy="356.3" r="4.2"/>
+  <circle class="st51" cx="1300" cy="332" r="4.2"/>
+  <text class="st2" transform="translate(1147.3501 596)"><tspan x="0" y="0">THE ENNEAGRAM — the two laws in one figure;</tspan></text>
+  <text class="st6" transform="translate(1099.0649 616)"><tspan x="0" y="0">the flat circle is the top-down view of a spiral: do arrives one level up</tspan></text>
+  <rect class="st17" x="620" y="1180" width="440" height="400" rx="16" ry="16"/>
+  <text class="st28" transform="translate(730.2148 1222)"><tspan x="0" y="0">THE LAW OF THREE</tspan></text>
+  <path class="st59" d="M840,1282l-96,150h192l-96-150Z"/>
+  <text class="st39" transform="translate(823.2549 1270)"><tspan x="0" y="0">active</tspan></text>
+  <text class="st39" transform="translate(715.1194 1452)"><tspan x="0" y="0">passive</tspan></text>
+  <text class="st39" transform="translate(909.3926 1452)"><tspan x="0" y="0">neutralizing</tspan></text>
+  <text class="st46" transform="translate(714.4878 1478)"><tspan x="0" y="0">Nothing happens without a third force. Two</tspan></text>
+  <text class="st46" transform="translate(693.0518 1495.42)"><tspan x="0" y="0">forces alone are a stalemate — and AWARENESS is</tspan></text>
+  <text class="st46" transform="translate(706.4644 1512.84)"><tspan x="0" y="0">the third force you carry into any deadlock you</tspan></text>
+  <text class="st46" transform="translate(723.6284 1530.26)"><tspan x="0" y="0">own. Six orders of triad govern all doing.</tspan></text>
+  <rect class="st17" x="1540" y="1180" width="440" height="400" rx="16" ry="16"/>
+  <text class="st28" transform="translate(1637.4854 1222)"><tspan x="0" y="0">THE LAW OF OCTAVES</tspan></text>
+  <line class="st66" x1="1590" y1="1330" x2="1933" y2="1330"/>
+  <circle class="st50" cx="1590" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1583.042 1356)"><tspan x="0" y="0">do</tspan></text>
+  <circle class="st71" cx="1639" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1633.4183 1356)"><tspan x="0" y="0">re</tspan></text>
+  <circle class="st71" cx="1688" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1680.6636 1356)"><tspan x="0" y="0">mi</tspan></text>
+  <circle class="st71" cx="1737" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1731.8181 1356)"><tspan x="0" y="0">fa</tspan></text>
+  <circle class="st71" cx="1786" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1778.1417 1356)"><tspan x="0" y="0">sol</tspan></text>
+  <circle class="st71" cx="1835" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1830.0623 1356)"><tspan x="0" y="0">la</tspan></text>
+  <circle class="st71" cx="1884" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1879.4681 1356)"><tspan x="0" y="0">si</tspan></text>
+  <circle class="st50" cx="1933" cy="1330" r="5"/>
+  <text class="st29" transform="translate(1926.042 1356)"><tspan x="0" y="0">do</tspan></text>
+  <path class="st67" d="M1712.5,1296l-7,20,14-10-7,20"/>
+  <path class="st67" d="M1908.5,1296l-7,20,14-10-7,20"/>
+  <text class="st10" transform="translate(1696.624 1284)"><tspan x="0" y="0">mi–fa</tspan></text>
+  <text class="st10" transform="translate(1893.6113 1284)"><tspan x="0" y="0">si–do</tspan></text>
+  <text class="st46" transform="translate(1608.5164 1400)"><tspan x="0" y="0">Every process stalls at two INTERVALS; a SHOCK —</tspan></text>
+  <text class="st46" transform="translate(1629.197 1417.42)"><tspan x="0" y="0">force from outside the line — carries it across.</tspan></text>
+  <text class="st46" transform="translate(1626.0581 1434.84)"><tspan x="0" y="0">The first arrives at the gap; the second must be</tspan></text>
+  <text class="st46" transform="translate(1612.8613 1452.26)"><tspan x="0" y="0">placed in advance. Nothing finishes by momentum.</tspan></text>
+  <text class="st9" transform="translate(1593.0342 1548)"><tspan x="0" y="0">why everything that starts, stops — and how to finish anyway</tspan></text>
+  <line class="st60" x1="1300" y1="2280" x2="1300" y2="780"/>
+  <text class="st30" transform="translate(1101.7852 752)"><tspan x="0" y="0">THE TURN — Part III: the method, hour by hour</tspan></text>
+  <line class="st62" x1="1268" y1="2190" x2="1332" y2="2190"/>
+  <text class="st29" transform="translate(1074.1804 2187)"><tspan x="0" y="0">SELF-OBSERVATION — observe</tspan></text>
+  <text class="st29" transform="translate(1105.9797 2203.75)"><tspan x="0" y="0">before you change anything</tspan></text>
+  <line class="st62" x1="1268" y1="2075" x2="1332" y2="2075"/>
+  <text class="st29" transform="translate(1342 2072)"><tspan x="0" y="0">THE STOP — the whole</tspan></text>
+  <text class="st29" transform="translate(1342 2088.75)"><tspan x="0" y="0">machine halted</tspan></text>
+  <text class="st29" transform="translate(1342 2105.5)"><tspan x="0" y="0">mid-gesture, and seen</tspan></text>
+  <line class="st62" x1="1268" y1="1960" x2="1332" y2="1960"/>
+  <text class="st29" transform="translate(1132.3103 1957)"><tspan x="0" y="0">THE BODY — posture,</tspan></text>
+  <text class="st29" transform="translate(1150.0776 1973.75)"><tspan x="0" y="0">tension, breath: the</tspan></text>
+  <text class="st29" transform="translate(1179.3318 1990.5)"><tspan x="0" y="0">honest anchor</tspan></text>
+  <line class="st62" x1="1268" y1="1845" x2="1332" y2="1845"/>
+  <text class="st29" transform="translate(1342 1842)"><tspan x="0" y="0">NON-EXPRESSION of negative</tspan></text>
+  <text class="st29" transform="translate(1342 1858.75)"><tspan x="0" y="0">emotion — decline to feed</tspan></text>
+  <text class="st29" transform="translate(1342 1875.5)"><tspan x="0" y="0">the leak</tspan></text>
+  <line class="st62" x1="1268" y1="1730" x2="1332" y2="1730"/>
+  <text class="st29" transform="translate(1093.1807 1727)"><tspan x="0" y="0">DIVIDED ATTENTION — the</tspan></text>
+  <text class="st29" transform="translate(1123.2771 1743.75)"><tspan x="0" y="0">world and yourself, both</tspan></text>
+  <text class="st29" transform="translate(1218.5286 1760.5)"><tspan x="0" y="0">at once</tspan></text>
+  <line class="st62" x1="1268" y1="1615" x2="1332" y2="1615"/>
+  <text class="st29" transform="translate(1342 1612)"><tspan x="0" y="0">ALARM CLOCKS — catch</tspan></text>
+  <text class="st29" transform="translate(1342 1628.75)"><tspan x="0" y="0">yourself asleep; change</tspan></text>
+  <text class="st29" transform="translate(1342 1645.5)"><tspan x="0" y="0">them often</tspan></text>
+  <circle class="st69" cx="1300" cy="1500" r="15"/>
+  <text class="st21" transform="translate(1342 1476)"><tspan x="0" y="0">SELF-REMEMBERING —</tspan></text>
+  <text class="st21" transform="translate(1342 1494.09)"><tspan x="0" y="0">attention flowing two</tspan></text>
+  <text class="st21" transform="translate(1342 1512.1801)"><tspan x="0" y="0">ways at once</tspan></text>
+  <text class="st12" transform="translate(1342 1538)"><tspan x="0" y="0">ten honest seconds of</tspan></text>
+  <text class="st12" transform="translate(1342 1554.75)"><tspan x="0" y="0">PRESENCE — the machine</tspan></text>
+  <text class="st12" transform="translate(1342 1571.5)"><tspan x="0" y="0">cannot do it; you can</tspan></text>
+  <line class="st61" x1="1272" y1="1420" x2="1300" y2="1420"/>
+  <text class="st23" transform="translate(1188.0361 1424)"><tspan x="0" y="0">1 · sleep in bed</tspan></text>
+  <line class="st61" x1="1272" y1="1382" x2="1300" y2="1382"/>
+  <text class="st23" transform="translate(1103.6616 1386)"><tspan x="0" y="0">2 · waking sleep — ordinary life</tspan></text>
+  <line class="st61" x1="1272" y1="1344" x2="1300" y2="1344"/>
+  <text class="st23" transform="translate(1153.1824 1348)"><tspan x="0" y="0">3 · self-consciousness</tspan></text>
+  <line class="st61" x1="1272" y1="1306" x2="1300" y2="1306"/>
+  <text class="st23" transform="translate(1126.729 1310)"><tspan x="0" y="0">4 · objective consciousness</tspan></text>
+  <text class="st16" transform="translate(1140.875 1268)"><tspan x="0" y="0">THE FOUR STATES</tspan></text>
+  <path class="st64" d="M1300,1280v-480"/>
+  <line class="st60" x1="1300" y1="800" x2="1300" y2="780"/>
+  <text class="st6" transform="translate(1089.2842 1592)"><tspan x="0" y="0">the turn does not happen by</tspan></text>
+  <text class="st6" transform="translate(1105.1597 1609.42)"><tspan x="0" y="0">itself — you are the shock</tspan></text>
+  <rect class="st17" x="620" y="1660" width="440" height="600" rx="16" ry="16"/>
+  <text class="st45" transform="translate(658.3257 1702)"><tspan x="0" y="0">THE ENGINE — Part V: transformation</tspan></text>
+  <text class="st2" transform="translate(650 1742)"><tspan x="0" y="0">FIRST FOOD — what you eat</tspan></text>
+  <text class="st44" transform="translate(650 1761)"><tspan x="0" y="0">audit lightly</tspan></text>
+  <text class="st2" transform="translate(650 1792)"><tspan x="0" y="0">SECOND FOOD — the air</tspan></text>
+  <text class="st44" transform="translate(650 1811)"><tspan x="0" y="0">notice, no more</tspan></text>
+  <text class="st2" transform="translate(650 1842)"><tspan x="0" y="0">THIRD FOOD — IMPRESSIONS</tspan></text>
+  <text class="st44" transform="translate(650 1861)"><tspan x="0" y="0">the food nobody audits: the real assignment</tspan></text>
+  <text class="st47" transform="translate(650 1898)"><tspan x="0" y="0">An impression received asleep goes nowhere.</tspan></text>
+  <text class="st47" transform="translate(650 1916.09)"><tspan x="0" y="0">Received in PRESENCE — at the exact point of entry</tspan></text>
+  <text class="st47" transform="translate(650 1934.1801)"><tspan x="0" y="0">— it transforms: the FIRST CONSCIOUS SHOCK.</tspan></text>
+  <text class="st47" transform="translate(650 1952.27)"><tspan x="0" y="0">Presence is metabolism.</tspan></text>
+  <text class="st14" transform="translate(650 1978.36)"><tspan x="0" y="0">The yield: the machine’s finest fuel — the same</tspan></text>
+  <text class="st14" transform="translate(650 1995.78)"><tspan x="0" y="0">premium energy the sex center runs on — the fuel</tspan></text>
+  <text class="st14" transform="translate(650 2013.2)"><tspan x="0" y="0">of everything higher.</tspan></text>
+  <text class="st6" transform="translate(650 2038.62)"><tspan x="0" y="0">So keep an IMPRESSION DIET: what enters the eyes</tspan></text>
+  <text class="st6" transform="translate(650 2056.04)"><tspan x="0" y="0">and ears is what you become.</tspan></text>
+  <rect class="st17" x="1540" y="1660" width="440" height="600" rx="16" ry="16"/>
+  <text class="st45" transform="translate(1589.1494 1702)"><tspan x="0" y="0">LIVING IT — Part VI: nothing wasted</tspan></text>
+  <text class="st47" transform="translate(1570 1742)"><tspan x="0" y="0">Friction is the gymnasium: the person who</tspan></text>
+  <text class="st47" transform="translate(1570 1760.09)"><tspan x="0" y="0">irritates you is the equipment. Met with presence,</tspan></text>
+  <text class="st47" transform="translate(1570 1778.1801)"><tspan x="0" y="0">difficulty becomes CONSCIOUS, INTENTIONAL</tspan></text>
+  <text class="st47" transform="translate(1570 1796.27)"><tspan x="0" y="0">SUFFERING — payment, not loss.</tspan></text>
+  <text class="st1" transform="translate(1570 1824.36)"><tspan x="0" y="0">THE SECOND CONSCIOUS SHOCK: negative emotion</tspan></text>
+  <text class="st1" transform="translate(1570 1842.45)"><tspan x="0" y="0">caught at the instant of arising and transformed —</tspan></text>
+  <text class="st1" transform="translate(1570 1860.54)"><tspan x="0" y="0">neither expressed nor suppressed.</tspan></text>
+  <text class="st39" transform="translate(1570 1888.63)"><tspan x="0" y="0">INTERNAL CONSIDERING (keeping accounts of how you</tspan></text>
+  <text class="st39" transform="translate(1570 1906.05)"><tspan x="0" y="0">are treated) is replaced by EXTERNAL CONSIDERING —</tspan></text>
+  <text class="st39" transform="translate(1570 1923.47)"><tspan x="0" y="0">real attention to the other.</tspan></text>
+  <text class="st6" transform="translate(1570 1950.89)"><tspan x="0" y="0">And keep the AIM warm — years, not weekends.</tspan></text>
+  <rect class="st17" x="90" y="2130" width="470" height="360" rx="16" ry="16"/>
+  <text class="st45" transform="translate(188.4487 2172)"><tspan x="0" y="0">HOW THE TURN FINDS YOU</tspan></text>
+  <text class="st2" transform="translate(120 2210)"><tspan x="0" y="0">A influences arise inside ordinary life. B influences</tspan></text>
+  <text class="st2" transform="translate(120 2228.76)"><tspan x="0" y="0">carry meaning IN from outside it. C influences pass</tspan></text>
+  <text class="st2" transform="translate(120 2247.52)"><tspan x="0" y="0">only person to person.</tspan></text>
+  <text class="st2" transform="translate(120 2274.28)"><tspan x="0" y="0">Something in you collects the B’s — the MAGNETIC</tspan></text>
+  <text class="st2" transform="translate(120 2293.04)"><tspan x="0" y="0">CENTER — until one day it steers you to a book, a</tspan></text>
+  <text class="st2" transform="translate(120 2311.8)"><tspan x="0" y="0">person, a way.</tspan></text>
+  <text class="st36" transform="translate(120 2338.5601)"><tspan x="0" y="0">That is how this map found you.</tspan></text>
+  <rect class="st17" x="90" y="1620" width="470" height="460" rx="16" ry="16"/>
+  <text class="st45" transform="translate(242.0752 1662)"><tspan x="0" y="0">THE FOUR WAYS</tspan></text>
+  <text class="st47" transform="translate(120 1700)"><tspan x="0" y="0">The fakir works the body; the monk, the heart; the yogi,</tspan></text>
+  <text class="st47" transform="translate(120 1718.09)"><tspan x="0" y="0">the mind. Methods, not religions — each demands leaving</tspan></text>
+  <text class="st47" transform="translate(120 1736.1801)"><tspan x="0" y="0">life, develops one center, and stays fragile.</tspan></text>
+  <text class="st47" transform="translate(120 1762.27)"><tspan x="0" y="0">THE FOURTH WAY works all three centers at once, begins</tspan></text>
+  <text class="st47" transform="translate(120 1780.36)"><tspan x="0" y="0">from understanding, and is built INSIDE life — so its</tspan></text>
+  <text class="st47" transform="translate(120 1798.45)"><tspan x="0" y="0">results survive contact with life.</tspan></text>
+  <text class="st36" transform="translate(120 1824.54)"><tspan x="0" y="0">It is the way of the SLY MAN — who knows what to take,</tspan></text>
+  <text class="st36" transform="translate(120 1842.63)"><tspan x="0" y="0">and how, without leaving his kitchen.</tspan></text>
+  <text class="st24" transform="translate(120 1870.72)"><tspan x="0" y="0">BELIEVE NOTHING. VERIFY EVERYTHING.</tspan></text>
+  <rect class="st38" x="820" y="2320" width="1060" height="470" rx="18" ry="18"/>
+  <text class="st45" transform="translate(1011.2837 2360)"><tspan x="0" y="0">THE MACHINE — Part II: ordinary life at the bottom of the arc</tspan></text>
+  <rect class="st75" x="860" y="2470" width="92" height="60" rx="8" ry="8"/>
+  <text class="st25" transform="translate(877.6375 2504)"><tspan x="0" y="0">intellectual</tspan></text>
+  <rect class="st75" x="964" y="2470" width="92" height="60" rx="8" ry="8"/>
+  <text class="st25" transform="translate(984.3468 2504)"><tspan x="0" y="0">emotional</tspan></text>
+  <rect class="st75" x="1068" y="2470" width="92" height="60" rx="8" ry="8"/>
+  <text class="st25" transform="translate(1094.97 2504)"><tspan x="0" y="0">moving</tspan></text>
+  <rect class="st75" x="1172" y="2470" width="92" height="60" rx="8" ry="8"/>
+  <text class="st25" transform="translate(1191.4512 2504)"><tspan x="0" y="0">instinctive</tspan></text>
+  <rect class="st75" x="1276" y="2470" width="92" height="60" rx="8" ry="8"/>
+  <text class="st25" transform="translate(1313.8326 2504)"><tspan x="0" y="0">sex</tspan></text>
+  <rect class="st26" x="860" y="2394" width="300" height="54" rx="8" ry="8"/>
+  <rect class="st55" x="860" y="2394" width="300" height="54" rx="8" ry="8"/>
+  <text class="st40" transform="translate(940.8945 2418)"><tspan x="0" y="0">TWO HIGHER CENTERS</tspan></text>
+  <text class="st34" transform="translate(929.4873 2436)"><tspan x="0" y="0">broadcasting — nothing receives</tspan></text>
+  <line class="st56" x1="920" y1="2448" x2="920" y2="2466"/>
+  <line class="st56" x1="1010" y1="2448" x2="1010" y2="2466"/>
+  <line class="st56" x1="1100" y1="2448" x2="1100" y2="2466"/>
+  <path class="st52" d="M906,2530c34,30,68,30,104,2"/>
+  <path class="st52" d="M1322,2530c-36,34-268,34-308,4"/>
+  <text class="st3" transform="translate(999.3481 2582)"><tspan x="0" y="0">wrong work — centers steal each other’s fuel</tspan></text>
+  <text class="st8" transform="translate(860 2606)"><tspan x="0" y="0">each center has moving, emotional, and intellectual PARTS — attention’s three depths</tspan></text>
+  <text class="st8" transform="translate(860 2628)"><tspan x="0" y="0">CENTER OF GRAVITY makes the three types: Man 1 (moving) · Man 2 (feeling) ·</tspan></text>
+  <text class="st8" transform="translate(860 2648)"><tspan x="0" y="0">Man 3 (thinking) — three flavors of one sleep</tspan></text>
+  <text class="st8" transform="translate(860 2672)"><tspan x="0" y="0">the FORMATORY APPARATUS answers in slogans while you are elsewhere;</tspan></text>
+  <text class="st8" transform="translate(860 2692)"><tspan x="0" y="0">the CHIEF FEATURE is the axle the whole act turns on</tspan></text>
+  <circle class="st57" cx="1674" cy="2432" r="8"/>
+  <text class="st0" transform="translate(1672.2466 2436)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1666" cy="2448.7" r="8"/>
+  <text class="st0" transform="translate(1664.2512 2452.7498)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1645.8" cy="2457.6" r="8"/>
+  <text class="st0" transform="translate(1644.0255 2461.6216)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1622.8" cy="2454.4" r="8"/>
+  <text class="st0" transform="translate(1621.0818 2458.4434)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1608" cy="2440.7" r="8"/>
+  <text class="st0" transform="translate(1606.2111 2444.7097)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1608.2" cy="2422.9" r="8"/>
+  <text class="st0" transform="translate(1606.4071 2426.8796)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1623.3" cy="2409.3" r="8"/>
+  <text class="st0" transform="translate(1621.5778 2413.3391)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1646.3" cy="2406.5" r="8"/>
+  <text class="st0" transform="translate(1644.588 2410.4563)"><tspan x="0" y="0">I</tspan></text>
+  <circle class="st57" cx="1666.4" cy="2415.6" r="8"/>
+  <text class="st0" transform="translate(1664.6158 2419.5872)"><tspan x="0" y="0">I</tspan></text>
+  <text class="st13" transform="translate(1586.178 2492)"><tspan x="0" y="0">many I’s — the churn</tspan></text>
+  <rect class="st75" x="1600" y="2540" width="54" height="30" rx="4" ry="4"/>
+  <circle class="st65" cx="1612" cy="2576" r="8"/>
+  <circle class="st65" cx="1642" cy="2576" r="8"/>
+  <path class="st58" d="M1670,2558c6.7-12,14-12,22,0M1681,2558v12"/>
+  <circle class="st65" cx="1718" cy="2546" r="6"/>
+  <line class="st66" x1="1718" y1="2552" x2="1718" y2="2568"/>
+  <rect class="st63" x="1740" y="2534" width="26" height="20" rx="3" ry="3"/>
+  <text class="st13" transform="translate(1540.6342 2602)"><tspan x="0" y="0">carriage · horse · driver — and the master’s seat, EMPTY</tspan></text>
+  <text class="st31" transform="translate(1531.9233 2636)"><tspan x="0" y="0">ESSENCE (small, real) wears a PERSONALITY (large, borrowed)</tspan></text>
+  <text class="st34" transform="translate(1514.0618 2658)"><tspan x="0" y="0">IDENTIFICATION is the glue; SLEEP is the state; the DREAM is the life</tspan></text>
+  <text class="st12" transform="translate(981.5155 2762)"><tspan x="0" y="0">— and yet: under the buffers, CONSCIENCE — the felt truth of the whole being at once — never stopped waiting —</tspan></text>
+  <line class="st19" x1="120" y1="2850" x2="2480" y2="2850"/>
+  <text class="st48" transform="translate(807.6875 2900)"><tspan x="0" y="0">EVERY CHAPTER ENDS IN PRACTICE — first day · first week · first month · first year — Chapter 17 gathers THE WORK’s complete toolkit</tspan></text>
+  <text class="st43" transform="translate(827.6632 2932)"><tspan x="0" y="0">the SECOND LINE OF WORK: with and for others (work groups, Appendix A) — knowledge and being must grow together into UNDERSTANDING</tspan></text>
+  <text class="st37" transform="translate(1072.6764 2964)"><tspan x="0" y="0">read it three times: once as a story, once as a study, once as a practice</tspan></text>
+  <text class="st15" transform="translate(1196.481 3062)"><tspan x="0" y="0">We are THIS.</tspan></text>
+  <text class="st42" transform="translate(1064.7031 3108)"><tspan x="0" y="0">Welcome to the path home. You’re on your way.</tspan></text>
+  <text class="st43" transform="translate(1054.7461 3170)"><tspan x="0" y="0">The Great Map of The Modern Fourth Way · from the book by Jeremy Simon</tspan></text>
+  <text class="st4" transform="translate(1134.77 3196)"><tspan x="0" y="0">Modern Fourth Way Publishing · modernfourthway.org</tspan></text>
+</svg></div>
+<div class="hud" id="topbar">
+  <a href="index.html">&larr; The Modern Fourth Way</a>
+  <span class="ttl">The Great Map — every concept, law, practice, and process of the book</span>
+</div>
+<div class="hud" id="hint">Drag to pan &nbsp;&middot;&nbsp; Scroll or pinch to zoom &nbsp;&middot;&nbsp; Double-tap to zoom in &nbsp;&middot;&nbsp; 0 or Fit to reset</div>
+<div id="controls">
+  <button id="zin" aria-label="Zoom in">+</button>
+  <button id="zout" aria-label="Zoom out">&minus;</button>
+  <button id="zfit" class="fit" aria-label="Fit to screen">FIT</button>
+</div>
+<div id="zoomlvl">100%</div>
+<script>
+(function(){
+'use strict';
+var svg = document.getElementById('mapsvg');
+var stage = document.getElementById('stage');
+var lvlEl = document.getElementById('zoomlvl');
+var MW = 2600, MH = 3400;               // map coordinate space
+var vb = {x:0, y:0, w:MW, h:MH};        // current viewBox
+var fitW = MW;                           // viewBox width at "fit" (set below)
+var interacted = false;
+
+function stageSize(){
+  var vv = window.visualViewport;
+  return { w: vv ? vv.width : window.innerWidth,
+           h: vv ? vv.height : window.innerHeight };
+}
+function apply(){
+  svg.setAttribute('viewBox', vb.x+' '+vb.y+' '+vb.w+' '+vb.h);
+  lvlEl.textContent = Math.round(100 * fitW / vb.w) + '%';
+}
+function clamp(){
+  var maxW = fitW * 1.6;                 // can zoom out a bit past fit
+  var minW = fitW / 600;                 // effectively infinite zoom in
+  if(vb.w > maxW){ var f = maxW/vb.w; vb.w = maxW; vb.h *= f; }
+  if(vb.w < minW){ var f2 = minW/vb.w; vb.w = minW; vb.h *= f2; }
+  // keep the map from being lost entirely off-screen
+  var pad = vb.w * 0.35;
+  vb.x = Math.max(-vb.w + pad, Math.min(MW - pad, vb.x));
+  vb.y = Math.max(-vb.h + pad, Math.min(MH - pad, vb.y));
+}
+function fit(){
+  var s = stageSize(), pad = 1.03;
+  var mapAspect = MW/MH, scrAspect = s.w/s.h;
+  if(scrAspect > mapAspect){ vb.h = MH*pad; vb.w = vb.h*scrAspect; }
+  else { vb.w = MW*pad; vb.h = vb.w/scrAspect; }
+  vb.x = (MW - vb.w)/2; vb.y = (MH - vb.h)/2;
+  fitW = vb.w;
+  apply();
+}
+function clientToMap(cx, cy){
+  var r = stage.getBoundingClientRect();
+  return { x: vb.x + (cx - r.left)/r.width * vb.w,
+           y: vb.y + (cy - r.top)/r.height * vb.h };
+}
+function zoomAt(cx, cy, factor){
+  interacted = true;
+  var p = clientToMap(cx, cy);
+  vb.w /= factor; vb.h /= factor;
+  var r = stage.getBoundingClientRect();
+  vb.x = p.x - (cx - r.left)/r.width * vb.w;
+  vb.y = p.y - (cy - r.top)/r.height * vb.h;
+  clamp(); apply();
+}
+function panPx(dx, dy){
+  interacted = true;
+  var r = stage.getBoundingClientRect();
+  vb.x -= dx * vb.w / r.width;
+  vb.y -= dy * vb.h / r.height;
+  clamp(); apply();
+}
+
+// ---- pointers: 1 = pan, 2 = pinch-zoom + pan ----
+var pointers = {};
+var lastMid = null, lastDist = 0;
+var lastTap = 0, lastTapX = 0, lastTapY = 0;
+function pCount(){ return Object.keys(pointers).length; }
+function mid(){
+  var ids = Object.keys(pointers), a = pointers[ids[0]], b = pointers[ids[1]];
+  return { x:(a.x+b.x)/2, y:(a.y+b.y)/2, d: Math.hypot(a.x-b.x, a.y-b.y) };
+}
+stage.addEventListener('pointerdown', function(e){
+  e.preventDefault();
+  stage.setPointerCapture && stage.setPointerCapture(e.pointerId);
+  pointers[e.pointerId] = {x:e.clientX, y:e.clientY};
+  if(pCount() === 1){
+    stage.classList.add('dragging');
+    // double-tap detection (touch)
+    if(e.pointerType !== 'mouse'){
+      var now = Date.now();
+      if(now - lastTap < 320 && Math.hypot(e.clientX-lastTapX, e.clientY-lastTapY) < 36){
+        zoomAt(e.clientX, e.clientY, 2.2);
+        lastTap = 0;
+      } else { lastTap = now; lastTapX = e.clientX; lastTapY = e.clientY; }
+    }
+  } else if(pCount() === 2){
+    var m = mid(); lastMid = m; lastDist = m.d;
+  }
+});
+function endPointer(e){
+  delete pointers[e.pointerId];
+  lastMid = null; lastDist = 0;
+  if(pCount() === 0) stage.classList.remove('dragging');
+}
+stage.addEventListener('pointerup', endPointer);
+stage.addEventListener('pointercancel', endPointer);
+stage.addEventListener('pointermove', function(e){
+  if(!(e.pointerId in pointers)) return;
+  var prev = pointers[e.pointerId];
+  pointers[e.pointerId] = {x:e.clientX, y:e.clientY};
+  if(pCount() === 2){
+    var m = mid();
+    if(lastDist > 0) zoomAt(m.x, m.y, m.d / lastDist);
+    if(lastMid) panPx(m.x - lastMid.x, m.y - lastMid.y);
+    lastMid = m; lastDist = m.d;
+  } else if(pCount() === 1){
+    panPx(e.clientX - prev.x, e.clientY - prev.y);
+  }
+});
+stage.addEventListener('wheel', function(e){
+  e.preventDefault();
+  zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.0016));
+}, {passive:false});
+stage.addEventListener('dblclick', function(e){
+  e.preventDefault(); zoomAt(e.clientX, e.clientY, 2.2);
+});
+
+// ---- controls & keys ----
+function centerZoom(f){
+  var s = stageSize();
+  zoomAt(s.w/2, s.h/2, f);
+}
+document.getElementById('zin').addEventListener('click', function(){ centerZoom(1.5); });
+document.getElementById('zout').addEventListener('click', function(){ centerZoom(1/1.5); });
+document.getElementById('zfit').addEventListener('click', function(){ fit(); });
+window.addEventListener('keydown', function(e){
+  if(e.key === '+' || e.key === '=') centerZoom(1.5);
+  if(e.key === '-' || e.key === '_') centerZoom(1/1.5);
+  if(e.key === '0' || e.key.toLowerCase() === 'f') fit();
+});
+function onResize(){ if(!interacted) fit(); else { clamp(); apply(); } }
+window.addEventListener('resize', onResize);
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', onResize);
+}
+fit();
+console.log('great-map viewer v1');
+})();
+</script>
+</body>
+</html>
