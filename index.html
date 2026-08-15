@@ -10,6 +10,7 @@
 --ember:#ffb45e;--moon:#efe9da;--body:#d6d2c4;--slate:#8a91b8;}
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;scroll-padding-top:170px;}
+[id]{scroll-margin-top:var(--navpad,170px);}
 body{background:var(--ink);color:var(--body);font-family:Georgia,'Times New Roman',serif;line-height:1.75;font-size:17px;}
 a{color:var(--gold);text-decoration:none;}
 a:hover{text-decoration:underline;}
@@ -194,12 +195,35 @@ section h2{font-size:26px;}
 <script>
 (function(){
   var nav = document.querySelector('nav');
+  function offset(){ return nav.offsetHeight + 22; }
   function setPad(){
-    document.documentElement.style.scrollPaddingTop = (nav.offsetHeight + 22) + 'px';
+    var o = offset();
+    document.documentElement.style.scrollPaddingTop = o + 'px';
+    document.documentElement.style.setProperty('--navpad', o + 'px');
   }
+  function scrollToId(id, smooth){
+    var el = document.getElementById(id);
+    if(!el) return false;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - offset();
+    window.scrollTo({top: Math.max(0, y), behavior: smooth ? 'smooth' : 'auto'});
+    return true;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'), function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      if(id && scrollToId(id, true)){
+        e.preventDefault();
+        if(history.pushState) history.pushState(null, '', '#' + id);
+      }
+    });
+  });
   window.addEventListener('resize', setPad);
-  window.addEventListener('load', setPad);
   setPad();
+  function landOnHash(){
+    if(location.hash) setTimeout(function(){ scrollToId(location.hash.slice(1), false); }, 80);
+  }
+  window.addEventListener('load', function(){ setPad(); landOnHash(); });
+  landOnHash();
 })();
 </script>
 </body>
