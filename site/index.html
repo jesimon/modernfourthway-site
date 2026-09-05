@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Modern Fourth Way — Waking Up in Ordinary Life</title>
+<meta name="description" content="A comprehensive overview of the Fourth Way — the machine, self-remembering, the Law of Three, the Law of Octaves, and the living enneagram — from The Modern Fourth Way by Jeremy Simon.">
+<style>
+:root{--ink:#151936;--indigo:#1c2144;--panel:#232952;--gold:#e8c88c;--gold-dim:#b39a67;
+--ember:#ffb45e;--moon:#efe9da;--body:#d6d2c4;--slate:#8a91b8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:170px;}
+[id]{scroll-margin-top:var(--navpad,170px);}
+body{background:var(--ink);color:var(--body);font-family:Georgia,'Times New Roman',serif;line-height:1.75;font-size:17px;}
+a{color:var(--gold);text-decoration:none;}
+a:hover{text-decoration:underline;}
+.eyebrow{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--slate);}
+nav{position:sticky;top:0;z-index:50;background:rgba(21,25,54,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(232,200,140,.25);}
+nav .inner{max-width:1080px;margin:0 auto;padding:14px 22px;display:flex;gap:22px;align-items:center;flex-wrap:wrap;}
+nav .brand{color:var(--gold);font-size:15px;letter-spacing:.06em;white-space:nowrap;}
+nav a.item{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--body);opacity:.85;}
+nav a.item:hover{color:var(--gold);text-decoration:none;opacity:1;}
+header.hero{max-width:1080px;margin:0 auto;padding:84px 22px 60px;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center;}
+header.hero h1{font-size:46px;font-weight:normal;color:var(--gold);line-height:1.12;margin:14px 0 18px;}
+header.hero .sub{font-style:italic;font-size:20px;color:var(--moon);margin-bottom:22px;}
+header.hero p{margin-bottom:14px;}
+header.hero img{width:100%;max-width:360px;justify-self:center;box-shadow:0 24px 60px rgba(0,0,0,.5);border:1px solid rgba(232,200,140,.3);}
+section{max-width:1080px;margin:0 auto;padding:64px 22px;border-top:1px solid rgba(232,200,140,.14);}
+section h2{font-size:31px;font-weight:normal;color:var(--gold);margin:10px 0 22px;line-height:1.2;}
+section h3{font-size:21px;font-weight:normal;color:var(--moon);margin:34px 0 12px;}
+section p{margin-bottom:15px;max-width:820px;}
+section ul{margin:0 0 15px 22px;max-width:800px;}
+section li{margin-bottom:8px;}
+.keyterm{color:var(--gold);}
+.figure{margin:34px auto;text-align:center;}
+.figure img{max-width:min(100%,720px);background:#fff;border:1px solid rgba(232,200,140,.3);box-shadow:0 12px 40px rgba(0,0,0,.35);cursor:zoom-in;}
+.figure figcaption{font-style:italic;font-size:14px;color:var(--slate);margin-top:10px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;margin:30px 0;}
+.gallery figure{margin:0;text-align:center;}
+.gallery img{width:100%;aspect-ratio:2023/2423;object-fit:contain;background:#fff;border:1px solid rgba(232,200,140,.3);cursor:zoom-in;}
+.gallery figcaption{font-size:13px;font-style:italic;color:var(--slate);margin-top:8px;}
+.lawtable{width:100%;border-collapse:collapse;margin:26px 0;font-size:14.5px;line-height:1.6;}
+.lawtable th{background:var(--panel);color:var(--gold);text-align:left;padding:12px 14px;font-weight:normal;border:1px solid rgba(232,200,140,.28);}
+.lawtable td{padding:11px 14px;border:1px solid rgba(232,200,140,.18);vertical-align:top;}
+.lawtable tr:nth-child(even) td{background:rgba(42,48,96,.35);}
+.tablewrap{overflow-x:auto;}
+.callout{background:var(--panel);border-left:3px solid var(--gold);padding:20px 24px;margin:28px 0;max-width:820px;font-style:italic;color:var(--moon);}
+.inbook{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-top:26px;}
+.animwrap{margin:34px 0;border:1px solid rgba(232,200,140,.35);box-shadow:0 16px 50px rgba(0,0,0,.4);}
+.animwrap iframe{display:block;width:100%;height:74vh;border:0;background:var(--ink);}
+.animnote{text-align:center;margin-top:12px;font-size:14px;}
+.bookgrid{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;}
+.bookgrid img{width:280px;box-shadow:0 20px 55px rgba(0,0,0,.5);border:1px solid rgba(232,200,140,.3);}
+.btn{display:inline-block;font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+padding:14px 26px;border:1px solid var(--gold);color:var(--gold);margin:16px 12px 0 0;}
+.btn.soon{opacity:.55;cursor:default;}
+.btn:hover{background:rgba(232,200,140,.12);text-decoration:none;}
+footer{border-top:1px solid rgba(232,200,140,.25);margin-top:40px;padding:44px 22px 60px;text-align:center;font-size:13.5px;color:var(--slate);}
+footer p{margin-bottom:8px;}
+#lightbox{position:fixed;inset:0;z-index:100;background:rgba(13,16,36,.94);
+display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;}
+#lightbox.open{display:flex;}
+#lightbox img{max-width:96vw;max-height:92vh;object-fit:contain;background:#fff;
+border:1px solid rgba(232,200,140,.4);box-shadow:0 30px 80px rgba(0,0,0,.6);}
+#lightbox .lbclose{position:fixed;top:18px;right:22px;font-size:34px;line-height:1;
+color:var(--gold);font-family:Georgia,serif;cursor:pointer;background:none;border:none;}
+#lightbox .lbcap{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+font-style:italic;font-size:14px;color:var(--moon);text-align:center;max-width:80vw;}
+@media(max-width:820px){
+header.hero{grid-template-columns:1fr;padding-top:52px;}
+header.hero img{order:-1;max-width:250px;}
+header.hero h1{font-size:33px;}
+.bookgrid{grid-template-columns:1fr;}
+.bookgrid img{margin:0 auto;}
+section h2{font-size:26px;}
+}
+</style>
+</head>
+<body>
+<nav><div class="inner"><a class="brand" href="#top">The Modern Fourth Way</a><a class="item" href="#situation">The Situation</a><a class="item" href="#machine">The Machine</a><a class="item" href="#practices">Practices</a><a class="item" href="#three">Law of Three</a><a class="item" href="#seven">Law of Octaves</a><a class="item" href="#enneagram">Enneagram</a><a class="item" href="#transformation">Transformation</a><a class="item" href="#living">Living It</a><a class="item" href="#edge">The Edge</a><a class="item" href="map.html">The Map</a><a class="item" href="#book">The Book</a></div></nav>
+
+<header class="hero" id="top">
+<div>
+<div class="eyebrow">The Fourth Way &middot; Practiced in Ordinary Life</div>
+<h1>Wake up — without leaving your life to do it.</h1>
+<div class="sub">A comprehensive overview of the Work: the diagnosis, the machine, the method, and the two laws that govern everything that happens.</div>
+<p>The Fourth Way is a century-old system of practical transformation, taught by G.&#8201;I. Gurdjieff and his students, holding that a human being can awaken from the automatic life — not by retreating to a monastery, an ashram, or a cave, but exactly where they already stand. This site presents its key ideas, freshly stated for a modern reader. Verify everything. Believe nothing.</p>
+<p><a class="btn" href="#situation">Begin the Overview</a> <a class="btn" href="enneagram.html">The Living Enneagram</a></p>
+</div>
+<img src="cover.png" alt="The Modern Fourth Way book cover">
+</header>
+<section id="situation"><div class="eyebrow">Part I — The Situation</div><h2>You Are Asleep — and You Can Wake</h2>
+<p>The Fourth Way begins with a diagnosis, and it asks you to verify it rather than believe it: <span class="keyterm">man is asleep</span>. Not at night — now. The state we call ordinary waking life is a kind of dreaming with the eyes open: thoughts think themselves, moods arrive uninvited, and hours pass on <span class="keyterm">autopilot</span>. You have driven a familiar road and arrived with no memory of driving. That gap — between being conscious and merely being functional — is the whole subject of the Work.</p>
+<p>The tradition's claim is stronger than "people are distracted." It says the feeling of a single, continuous, in-command <em>I</em> is itself part of the dream — and that a different state, <span class="keyterm">self-remembering</span>, is available in which attention flows in two directions at once: outward to the world <em>and</em> inward to the one attending. Moments of it happen accidentally in every life. The Work is the craft of producing them on purpose.</p>
+<p>Every great tradition already knows this. Judaism's <em>kavanah</em> and halakhah, Christianity's "watch and pray," Islam's <em>muraqabah</em> and remembrance, Buddhism's <em>sati</em>, the Gita's action-with-presence — each names the sleep and commands the waking. The three classical paths of transformation — fakir, monk, and yogi — are specialized, full-time <em>methods</em>, not religions, and each demands leaving ordinary life. The <span class="keyterm">Fourth Way</span> makes a different wager: that ordinary life itself — your job, your family, your inbox — can be the monastery, if you know the method. Nothing here is to be believed. Everything is to be tested.</p>
+<div class="inbook">In the book: Chapters 1–3, with the full survey of the traditions and the three-part test for verifying the diagnosis in your own experience</div></section><section id="machine"><div class="eyebrow">Part II — The Machine</div><h2>Know the Machine Before You Drive It</h2>
+<p>What runs your life on autopilot is not a defect — it is a very capable <span class="keyterm">machine</span>. The Work's map of it has five lower <span class="keyterm">centers</span>, each an independent mind with its own speed and its own fuel: intellectual, emotional, moving, instinctive, and sex. Most inner chaos is <span class="keyterm">wrong work of centers</span> — thinking doing feeling's job, emotion hijacking the body, every center stealing fuel that isn't its own. Two <span class="keyterm">higher centers</span> broadcast continuously; in sleep, nothing receives them.</p>
+<p>Look closer and the single "I" dissolves into a <span class="keyterm">crowd of I's</span> — hundreds of small selves, each grabbing the wheel for a moment and calling itself you. What keeps the crowd from noticing its own contradictions are <span class="keyterm">buffers</span> — psychological shock absorbers that keep the lie comfortable. Beneath them lies <span class="keyterm">conscience</span>: not learned morality, but the felt truth of the whole being at once. The classic image holds the anatomy together: a <span class="keyterm">carriage</span> (body), <span class="keyterm">horse</span> (emotion), <span class="keyterm">driver</span> (mind) — and an empty seat where the <span class="keyterm">master</span> should sit.</p>
+<h3>The Ladder: Man Number One Through Seven</h3>
+<p>Everyone is born one of three types — centered in the body, in feeling, or in thought (man number one, two, and three). These differ only in flavor; all three are the same machine asleep. <strong>Man number four is the first rung that must be built</strong>: a permanent aim, centers coming into balance, a deputy steward holding the empty seat. Above that: unity (five), the threshold (six), and the completed machine under one will (seven). The seven diagrams below share one frame — what changes, rung to rung, is not the machine but its <em>connections</em>.</p>
+<div class="gallery">
+<figure><img src="man-number-one.png" alt="Man number one" loading="lazy"><figcaption>Man 1 — centered in the body</figcaption></figure>
+<figure><img src="man-number-two.png" alt="Man number two" loading="lazy"><figcaption>Man 2 — centered in feeling</figcaption></figure>
+<figure><img src="man-number-three.png" alt="Man number three" loading="lazy"><figcaption>Man 3 — centered in thought</figcaption></figure>
+<figure><img src="man-number-four.png" alt="Man number four" loading="lazy"><figcaption>Man 4 — the machine under observation</figcaption></figure>
+<figure><img src="man-number-five.png" alt="Man number five" loading="lazy"><figcaption>Man 5 — unity and the permanent I</figcaption></figure>
+<figure><img src="man-number-six.png" alt="Man number six" loading="lazy"><figcaption>Man 6 — the threshold</figcaption></figure>
+<figure><img src="man-number-seven.png" alt="Man number seven" loading="lazy"><figcaption>Man 7 — the machine after crystallization</figcaption></figure>
+</div>
+<div class="inbook">In the book: Chapters 4–9 — including the parts of centers, chief feature, and the full education of the emotional center</div></section><section id="practices"><div class="eyebrow">Part III — Core Practices</div><h2>The Method, Hour by Hour</h2>
+<p><span class="keyterm">Self-observation</span> comes first, and it has an iron rule: <em>observe before you change anything</em>. You cannot repair a machine you have never watched run. Then the central practice: <span class="keyterm">self-remembering</span> — divided attention, awareness of the world AND of yourself, both at once. Ten seconds of it is real. The machine cannot do it; that is precisely why it works.</p>
+<p>Understand what actually changes, because it is not the presence of awareness — awareness is <em>always</em> present. What changes is the <span class="keyterm">shape of its flow</span>. Ordinary attention moves like an arrow, or a river: one direction, out, spent entirely at its target. In self-remembering the flow becomes <em>circular</em> — a <span class="keyterm">whirlpool</span> — still touching the world, more vividly than before, but curving back through the one who touches: nothing divided, one current bent into a circle. And the real state has a <span class="keyterm">taste</span> you can learn: the counterfeit <em>announces</em> itself in words, while the real thing <em>shifts</em> something — a slight, unmistakable clarity that grows if you stay. The state will be lost, again and again; finding your way back — again, and again, and again — is not failure. It is the practice itself, wearing the channel that one day carries its own current. Even the effort has a horizon: what is practiced long enough becomes structure, and what once cost everything eventually costs nothing. Meanwhile, tend the instrument — a tired or hungry body drags every arrow to itself. Sometimes the most spiritual thing you can do is take the nap.</p>
+<p>The Work names <span class="keyterm">four states of consciousness</span>: sleep in bed, so-called waking sleep (ordinary life), self-consciousness (self-remembering sustained), and objective consciousness. Most lives are spent entirely in the second. The practices aim at the third — and the third opens the door to the fourth.</p>
+<p>Two further fronts: the body — posture, tension, breath — as the most honest instrument on the panel and the anchor for attention; and the emotions, where the Work makes its most counter-cultural demand: the <span class="keyterm">non-expression of negative emotions</span> — not suppression, but declining to feed the leak while observing it, because negative emotion is the machine's single largest energy hemorrhage.</p>
+<div class="inbook">In the book: Chapters 10–12, each ending in graduated practices — plus the complete toolkit of Chapter 17</div></section><section id="three"><div class="eyebrow">Part IV — The Laws</div><h2>The Law of Three: Nothing Happens Without a Third Force</h2>
+<p>Every event — every one — is the meeting of three forces: <span class="keyterm">active</span> (the push), <span class="keyterm">passive</span> (the resistance), and a <span class="keyterm">neutralizing third force</span> that brings them into working relation. Two forces alone produce only stalemate; this is why resolutions fail and why willpower loses to habit. The practical art is learning to <em>see</em> the third force — and to supply it when a stuck process needs one.</p>
+<div class="tablewrap"><table class="lawtable "><thead><tr><th>Event</th><th>Active force</th><th>Passive force</th><th>Neutralizing (third) force</th></tr></thead><tbody><tr><td>A seed becomes a plant</td><td>Sunlight and water, driving growth</td><td>The seed itself — dormant, inert, resisting change</td><td>The soil: the medium that holds moisture to the root and warmth to the germ, letting energy and seed combine</td></tr><tr><td>Bread rises</td><td>The yeast, actively fermenting</td><td>The dough — heavy, dense, going nowhere on its own</td><td>The warmth of the proofing place, which brings yeast and dough into working relation</td></tr><tr><td>An argument gets resolved</td><td>One person pushing for change</td><td>The other's resistance to it</td><td>The shared commitment (the marriage, the friendship, the project) for whose sake both sides bend</td></tr><tr><td>A sale closes</td><td>The seller's offer and pitch</td><td>The buyer's hesitation and inertia</td><td>The buyer's actual need, which relates the offer to the hesitation and tips it</td></tr><tr><td>A student learns to drive</td><td>The instructor's guidance</td><td>The student's fear and untrained habits</td><td>The empty parking lot — safe conditions in which instruction can meet fear without disaster</td></tr><tr><td>A new habit takes hold</td><td>Your intention</td><td>The machine's inertia</td><td>The technique: the alarm clock, the calendar entry, the partner — structure that relates intention to inertia (this whole book is a study of this row)</td></tr></tbody></table></div>
+<div class="inbook">In the book: Chapter 12, with the six triads and how to work with each</div></section><section id="seven"><div class="eyebrow">Part IV — The Laws</div><h2>The Law of Octaves: Why Everything That Starts, Stops</h2>
+<p>No process moves in a straight line. Every development proceeds like a musical scale — do, re, mi… — and at two precise places the energy of the original impulse runs out: the <span class="keyterm">intervals</span>. At the first interval (mi–fa), projects quietly die; at the second (si–do), they die within sight of completion. Nothing is wrong with you when this happens. It is law.</p>
+<p>What crosses an interval is a <span class="keyterm">shock</span> — fresh force from outside the line of the process. The first shock must arrive when the interval falls; the second must be <em>placed in advance</em>, prepared before it is needed. Learn where your octaves are, and you stop blaming your character for what is actually structure:</p>
+<div class="tablewrap"><table class="lawtable "><thead><tr><th>Process (its <em>do</em>)</th><th>When the first interval falls</th><th>How you'd recognize it</th><th>The first conscious shock</th></tr></thead><tbody><tr><td>Digestion of food (<em>do</em>: food enters the mouth)</td><td>Mid-process, when food's refinement reaches <em>mi</em> and can go no further on its own</td><td>You don't — and that's the lesson: nothing stalls, because the shock is automatic</td><td>None needed: AIR, entering with every breath, crosses this gap for you — nature's pre-installed shock</td></tr><tr><td>Work on oneself (<em>do</em>: the aim sentence, day one)</td><td>Week three, almost to the day</td><td>Not wanting to; the notebook goes blank; a different I is at the controls than the one that promised</td><td>The pre-placed week-three check-in call, and re-reading Chapter 1 with the aim sentence in hand</td></tr><tr><td>Preparing a meal (<em>do</em>: the menu is decided)</td><td>The handoff from raw preparation to actual cooking</td><td>Ingredients sit chopped and waiting; momentum dies in the gap between prep and fire</td><td>Heat, applied on schedule: the stove lit at the planned time — new energy of a different kind than chopping</td></tr><tr><td>Learning the guitar (<em>do</em>: the first lesson)</td><td>Weeks two to three, when fingertips hurt and every chord buzzes</td><td>"I'll practice tomorrow"; the guitar stays in its case; buying gear replaces playing</td><td>The standing weekly lesson (a teacher expecting you) and practice chained to an existing daily habit</td></tr><tr><td>Writing a book (<em>do</em>: the premise and first chapter)</td><td>Around a fifth of the way in, when the outline's glamour is spent</td><td>Endless research; a seductive NEW book idea; rereading instead of writing</td><td>A fixed daily writing appointment, plus one reader who expects pages every week</td></tr><tr><td>Getting fit — couch to 5K (<em>do</em>: registering for the race)</td><td>Week three: sore, tired, and no visible change</td><td>The snooze button wins; "rest days" multiply; the shoes migrate to the closet</td><td>A running partner waiting at the corner at 6 a.m. — scheduled before week one began</td></tr></tbody></table></div>
+<div class="tablewrap"><table class="lawtable "><thead><tr><th>Process</th><th>When the second interval falls</th><th>How you'd recognize it</th><th>The second conscious shock</th></tr></thead><tbody><tr><td>Digestion of food</td><td>At the finest stage: impressions arrive as food but die on contact without attention</td><td>Days that leave no trace; meals eaten but never tasted; a life not received</td><td>Receiving the impression at its entry — presence at the moment of contact (Chapter 16 teaches this as the Work's central act)</td></tr><tr><td>Work on oneself</td><td>Months ten to eleven of year one: the completion gap</td><td>Coasting; the review skipped because "the year's basically done"; harvest left ungathered</td><td>The annual review on the calendar, third-line service, and deliberate deepening of the strongest practice</td></tr><tr><td>Preparing a meal</td><td>The final half hour, when everything must land at once — and then the meal must actually reach the table</td><td>The urge to serve it "close enough"; plating abandoned; the cook eats standing up, alone</td><td>The finishing timeline written in advance, and the table set and guests seated BEFORE the final push — completion means eaten, not cooked</td></tr><tr><td>Learning the guitar</td><td>The long plateau before whole songs: you can play parts of everything, all of nothing</td><td>Noodling the same riffs; "good enough for the campfire"; nothing new attempted</td><td>A performance date booked and announced — one song brought to completion standard for real listeners</td></tr><tr><td>Writing a book</td><td>The last tenth: revision and the ending</td><td>"It's basically done" (it isn't); tinkering with chapter one instead of finishing chapter twenty</td><td>A deadline with teeth: the editor's date, the announced publication, the manuscript promised to a reader</td></tr><tr><td>Getting fit — couch to 5K</td><td>The final two weeks before the race, and the last kilometer of it</td><td>Skipping the last long runs; "I've already proven the point"</td><td>The race paid for and public; friends at the finish line; crossing it as a completed act, not a fade</td></tr></tbody></table></div>
+<div class="inbook">In the book: Chapters 13–14 — including inner octaves and the discipline of finishing</div></section><section id="enneagram"><div class="eyebrow">Part IV — The Laws</div><h2>The Enneagram: The Two Laws in One Figure</h2>
+<p>The <span class="keyterm">enneagram</span> unites both laws in a single symbol: a circle of nine points (the octave), an inner triangle at 9-3-6 (the three forces — its points marking exactly where the shocks must enter), and a six-pointed <span class="keyterm">hexad</span> tracing 1→4→2→8→5→7 (the hidden circulation inside any living process). It is not a personality test. It is a map of how anything that happens, happens.</p>
+<figure class="figure"><img src="enneagram-symbol.png" alt="The enneagram: circle, triangle, and hexad" loading="lazy"><figcaption>The enneagram: circle, triangle, and hexad</figcaption></figure>
+<figure class="figure"><img src="enneagram-foods.png" alt="The food octave on the enneagram — the figure's classic worked example" loading="lazy"><figcaption>The food octave on the enneagram — the figure's classic worked example</figcaption></figure>
+<div class="tablewrap"><table class="lawtable "><thead><tr><th>Process</th><th>The interval at point 3: when, and how recognized</th><th>The first conscious shock applied there</th></tr></thead><tbody><tr><td>Digestion of food</td><td>Food's refinement reaches <em>mi</em> (point 2) and stalls before <em>fa</em> (point 4) — though you never feel the stall</td><td>AIR enters at point 3 automatically with every breath: the figure shows nature's shock installed exactly where the structure demands it</td></tr><tr><td>Work on oneself</td><td>Week three: the launching I is gone, and the one on duty never signed the aim sentence</td><td>The check-in call and the re-read — placed at point 3 on day one, which is what "reading your position on the figure" means in practice</td></tr><tr><td>Preparing a meal</td><td>Prep complete, cooking not begun: chopped ingredients cooling on the board while momentum dies</td><td>Fire, on schedule — the stove lit at the planned moment brings energy of a NEW kind, which is what every point-3 shock is</td></tr><tr><td>Learning the guitar</td><td>Weeks two to three: sore fingers, buzzing chords, the case staying closed</td><td>The weekly lesson: a teacher standing at point 3, expecting you — third force wearing a human face</td></tr><tr><td>Writing a book</td><td>A fifth of the way in: the outline's glamour spent, research spiraling</td><td>The fixed writing appointment and the weekly reader — appetite replaced by structure at exactly the marked position</td></tr><tr><td>Getting fit (couch to 5K)</td><td>Week three: soreness up, results invisible, snooze button winning</td><td>The partner at the corner at 6 a.m., arranged before week one — a shock waiting at its station</td></tr></tbody></table></div>
+<div class="tablewrap"><table class="lawtable "><thead><tr><th>Process</th><th>The interval between 8 and 9: when, and how recognized</th><th>The second conscious shock, introduced at point 6</th></tr></thead><tbody><tr><td>Digestion of food</td><td>Impressions (the finest food) arrive but die unreceived; the octave cannot complete into presence</td><td>Attention at the moment of contact — the first conscious shock of Chapter 16, shown on the figure at point 6, prepared long before the completion gap it serves</td></tr><tr><td>Work on oneself</td><td>Months ten to eleven: coasting, the harvest ungathered, "basically done"</td><td>The annual review, the service, the deepening — all scheduled back at mid-year (point 6), which is why the toolkit places them in the program before you need them</td></tr><tr><td>Preparing a meal</td><td>The cooked meal is not yet the EATEN meal: the final push, and the handoff to the table</td><td>The dining room readied at point 6 — table set, guests seated, timeline written — so that when the kitchen's octave ends, the meal crosses to its completion instead of dying on the counter (this is Bennett's famous kitchen reading)</td></tr><tr><td>Learning the guitar</td><td>The plateau before whole songs: parts of everything, all of nothing</td><td>The performance date — booked months early (point 6), so the completion energy exists before the completion gap</td></tr><tr><td>Writing a book</td><td>The last tenth: the ending unwritten while chapter one gets re-polished</td><td>The editor's deadline and announced date, agreed at point 6, when finishing still felt far away</td></tr><tr><td>Getting fit (couch to 5K)</td><td>The final two weeks and the last kilometer</td><td>Race paid, public, friends at the finish — commitments made mid-training that stand waiting at the gap</td></tr></tbody></table></div>
+<div class="tablewrap"><table class="lawtable "><thead><tr><th>Process</th><th>Reading the inner lines</th></tr></thead><tbody><tr><td>Digestion of food</td><td>Each food's refinement (1→4) enables the next food's entry to matter; how impressions land (2→8) is shaped by the state of the coarser octaves; and the completed digestion (7→1) sets the machine's starting state for the next intake — the refinery is one system, not three pipes</td></tr><tr><td>Work on oneself</td><td>Early observation (1) is done FOR the sake of the practices at 4; what the practices reveal (4→2) revises the observation; the aim (2) is written with the year's completion (8) in view; the annual review (8→5) reshapes mid-year work; and the finished year (7→1) becomes the raw material of next year's <em>do</em> — the spiral, drawn</td></tr><tr><td>Preparing a meal</td><td>Shopping (1) is done with the cooking method (4) in mind; the cooking (4→2) revises the plan; the menu (2) is designed from the finished plate (8) backward; serving time (8→5) dictates the coordination of the burners; coordination (5→7) shapes final assembly; and tonight's served meal (7→1) informs the next menu</td></tr><tr><td>Learning the guitar</td><td>Finger exercises (1) exist for the songs (4); playing songs (4→2) reveals which exercises were missing; the practice plan (2) is built from the recital (8) backward; the performance (8→5) disciplines the daily session; and each completed song (7→1) resets technique one level higher</td></tr><tr><td>Writing a book</td><td>Research (1) serves the drafting (4); drafting (4→2) reveals what the outline (2) should have been; the outline is written from the ending (8) backward; the deadline (8→5) disciplines the daily pages; and the finished draft (7→1) teaches you how to research the next one</td></tr><tr><td>Getting fit</td><td>Early runs (1) exist for the training plan (4); training (4→2) recalibrates the goal pace (2); the goal is set from race day (8) backward; the race (8→5) gives every ordinary Tuesday run its meaning; and crossing the line (7→1) becomes the fitness baseline the next cycle starts from</td></tr></tbody></table></div>
+<h3>The Living Enneagram</h3>
+<p>The flat figure is really the top-down view of a spiral: <em>do</em> never returns to where it began — it arrives one level up. The animation below shows all three movements at once: the octave climbing the spiral, the Law of Three ascending its triangle in unison, and the inner circulation racing ahead and returning, always meeting the process exactly on time. Drag to tilt — fully upright, the spiral collapses into the familiar flat enneagram.</p>
+<div class="animwrap"><iframe src="enneagram.html" title="The Living Enneagram" loading="lazy"></iframe></div>
+<p class="animnote"><a href="enneagram.html" target="_blank">Open the Living Enneagram full-screen &rarr;</a></p>
+<div class="inbook">In the book: Chapters 15–16 — reading the figure, and the transformation of energies mapped on it</div></section><section id="transformation"><div class="eyebrow">Part V — Transformation</div><h2>Three Foods, and the Shock Only You Can Give</h2>
+<p>The machine runs on <span class="keyterm">three foods</span>: what you eat, the air you breathe — and <span class="keyterm">impressions</span>, everything that enters through the senses. The third food is the one nobody audits, and in the modern world it has become industrial sludge: engineered feeds, engagement bait, ambient noise. The Work's claim is exact: <em>the quality of your consciousness is downstream of the quality of your impressions</em>. And unlike the other two foods, this one never pauses: you can fast from food for weeks and from air for minutes, but the stream of impressions runs as long as you live — starve it and the mind simply prints its own. The only impression-free state is death, which makes this the one doorway where presence can always be applied.</p>
+<p>And here the octave teaching turns personal. Impressions arrive at the machine as a <em>do</em> that ordinarily goes nowhere — unless a shock is applied at the precise point of entry. That shock is <span class="keyterm">self-remembering at the moment of impression</span>: the <span class="keyterm">first conscious shock</span>. Received awake, the same sight, the same face, the same street delivers finer energy — the fuel every higher process requires. This is why presence is not a luxury. It is metabolism.</p>
+<div class="inbook">In the book: Chapters 16–18 — the full energy ladder, the impression diet, and the complete practice program: first day, first week, first month, first year</div></section><section id="living"><div class="eyebrow">Part VI — Living the Work</div><h2>Friction, Suffering, and the Second Shock</h2>
+<p>The Work does not promise a smoother life; it promises that nothing in your life need be wasted. Difficulty becomes <span class="keyterm">conscious suffering</span> — suffering met with presence instead of identification — and the very frictions that once drained you become fuel. The person who irritates you is, precisely, your gymnasium.</p>
+<p>The <span class="keyterm">second conscious shock</span> works at the moment negative emotion arises: instead of expressing it or suppressing it, the energy itself is transformed — caught at the instant of arising and converted, the single most advanced practice in the canon. Around it: external considering (genuine attention to others), the repair of relationships as Work material, and aim held over years, not weekends.</p>
+<div class="inbook">In the book: Chapters 19–21 — with the full mechanics of both shocks and the practices that train them</div></section><section id="edge"><div class="eyebrow">Part VII — The Edge of the Map</div><h2>Where Effort Meets Its Limit</h2>
+<p>Everything to this point is effort — rightly so: the Work is called work. But the map has an edge. There comes a place where effort itself becomes the obstacle, where the doer who has been doing all this practice is seen through, and where what you have been seeking turns out to be what has been looking all along. The tradition knows this territory; the deepest voices of every tradition converge on it.</p>
+<p class="callout">The book's final part — Part VIII — walks past this edge: what you actually are, the two streams of the world's wisdom flowing together, and why, at the end of all the climbing, there was never anywhere to go. It is the destination the seven parts above were quietly preparing you for — and it is not summarized here, because it should not be met in summary.</p>
+<div class="inbook">In the book: Chapters 22–25</div></section>
+
+<section id="themap"><div class="eyebrow">The Whole Journey</div><h2>The Great Map of The Modern Fourth Way</h2>
+<p>Every concept, law, practice, and process of the book, drawn as one figure: the descent into sleep, the machine at the bottom of the arc, the turn, the ladder of practice, the two laws, the climb through Man 4 to Man 7 — and the return, with its gift. A pure vector chart: zoom in as far as you like and every line stays sharp.</p>
+<figure class="figure"><a href="map.html"><img src="map-preview.jpg" alt="The Great Map of The Modern Fourth Way — preview" loading="lazy" style="cursor:pointer;max-width:min(100%,560px);"></a>
+<figcaption>Tap the map to open the interactive viewer — pan, pinch, zoom without limit</figcaption></figure>
+<p style="text-align:center"><a class="btn" href="map.html">Open the Interactive Map</a></p>
+</section>
+<section id="book"><div class="eyebrow">The Book</div><h2>The Modern Fourth Way</h2>
+<div class="bookgrid">
+<img src="cover.png" alt="The Modern Fourth Way — book cover">
+<div>
+<p><em>A Practical Workbook for Waking Up — and Discovering What You Actually Are</em></p>
+<p>Everything on this page is the overview. The book is the practice: twenty-five chapters across eight parts, every chapter ending in graduated exercises — first day, first week, first month, first year — plus the complete toolkit, nine original diagrams, the full teaching of the two laws with worked examples, a 46-term glossary keyed to the page where each idea is first taught, and the final part this site deliberately leaves for the book itself.</p>
+<p>By Jeremy Simon &middot; Modern Fourth Way Publishing</p>
+<a class="btn soon">Buy the Book — Coming Soon</a>
+<a class="btn" href="mailto:info@modernfourthway.org">Contact</a>
+<p style="margin-top:14px;font-size:0.95em">An audiobook edition — read by the author — is in production.</p>
+<p style="margin-top:6px;font-size:0.95em">Listening to the audiobook? <a href="audiobook-companion.pdf" download>Download the companion PDF</a> — all nine diagrams and the complete glossary of the Work.</p>
+</div></div></section>
+
+<footer>
+<p>&copy; 2026 Jeremy Simon. All rights reserved.</p>
+<p>Text, diagrams, tables, and the Living Enneagram animation are adapted from <em>The Modern Fourth Way: A Practical Workbook for Waking Up — and Discovering What You Actually Are</em>.</p>
+<p>Published by Modern Fourth Way Publishing &middot; Springfield, Illinois &middot; <a href="mailto:info@modernfourthway.org">info@modernfourthway.org</a></p>
+</footer>
+<div id="lightbox" role="dialog" aria-label="Enlarged diagram">
+  <button class="lbclose" aria-label="Close">&times;</button>
+  <img alt="">
+  <div class="lbcap"></div>
+</div>
+<script>
+(function(){
+  var lb=document.getElementById('lightbox');
+  var lbImg=lb.querySelector('img');
+  var lbCap=lb.querySelector('.lbcap');
+  function openLb(img){
+    lbImg.src=img.src; lbImg.alt=img.alt;
+    var fig=img.closest('figure');
+    var cap=fig?fig.querySelector('figcaption'):null;
+    lbCap.textContent=cap?cap.textContent:(img.alt||'');
+    lb.classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeLb(){
+    lb.classList.remove('open');
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('.gallery img, .figure img').forEach(function(img){
+    img.addEventListener('click', function(){ openLb(img); });
+  });
+  lb.addEventListener('click', closeLb);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLb(); });
+})();
+</script>
+<script>
+(function(){
+  var nav = document.querySelector('nav');
+  function offset(){ return nav.offsetHeight + 22; }
+  function setPad(){
+    var o = offset();
+    document.documentElement.style.scrollPaddingTop = o + 'px';
+    document.documentElement.style.setProperty('--navpad', o + 'px');
+  }
+  function scrollToId(id, smooth){
+    var el = document.getElementById(id);
+    if(!el) return false;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - offset();
+    window.scrollTo({top: Math.max(0, y), behavior: smooth ? 'smooth' : 'auto'});
+    return true;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'), function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      if(id && scrollToId(id, true)){
+        e.preventDefault();
+        if(history.pushState) history.pushState(null, '', '#' + id);
+      }
+    });
+  });
+  window.addEventListener('resize', setPad);
+  setPad();
+  function landOnHash(){
+    if(location.hash) setTimeout(function(){ scrollToId(location.hash.slice(1), false); }, 80);
+  }
+  window.addEventListener('load', function(){ setPad(); landOnHash(); });
+  landOnHash();
+})();
+</script>
+</body>
+</html>
