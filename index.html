@@ -74,11 +74,24 @@ header.hero h1{font-size:33px;}
 .bookgrid img{margin:0 auto;}
 section h2{font-size:26px;}
 }
+.subwrap{background:var(--panel);border:1px solid rgba(232,200,140,.28);box-shadow:0 18px 50px rgba(0,0,0,.35);max-width:640px;padding:34px;}
+.subwrap h2{margin-top:0;}
+.subwrap label{display:block;font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);margin:16px 0 6px;}
+.subwrap input{width:100%;background:var(--ink);border:1px solid rgba(232,200,140,.3);color:var(--moon);font-family:Georgia,serif;font-size:16px;padding:11px 13px;border-radius:2px;}
+.subwrap input:focus{outline:none;border-color:var(--gold);}
+.subwrap button{margin-top:24px;width:100%;background:var(--gold);color:var(--ink);border:none;font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:14px;cursor:pointer;border-radius:2px;}
+.subwrap button:hover{background:var(--ember);}
+.subwrap button:disabled{opacity:.55;cursor:wait;}
+.subwrap .fine{font-size:13px;color:var(--slate);margin-top:12px;line-height:1.6;}
+#submsg{display:none;margin-top:18px;padding:12px 16px;border-radius:2px;font-size:15px;}
+#submsg.ok{display:block;background:rgba(232,200,140,.12);border:1px solid rgba(232,200,140,.45);color:var(--moon);}
+#submsg.err{display:block;background:rgba(255,120,120,.08);border:1px solid rgba(255,120,120,.4);color:#f0c8c0;}
 </style>
 </head>
 <body>
 <nav><div class="inner"><a class="brand" href="#top">The Modern Fourth Way</a><a class="item" href="#situation">The Situation</a><a class="item" href="#machine">The Machine</a><a class="item" href="#practices">Practices</a><a class="item" href="#three">Law of Three</a><a class="item" href="#seven">Law of Octaves</a><a class="item" href="#enneagram">Enneagram</a><a class="item" href="#transformation">Transformation</a><a class="item" href="#living">Living It</a><a class="item" href="#edge">The Edge</a><a class="item" href="map.html">The Map</a>
-<a class="item" href="events.html">Events</a><a class="item" href="#book">The Book</a></div></nav>
+<a class="item" href="events.html">Events</a>
+<a class="item" href="#subscribe">Subscribe</a><a class="item" href="#book">The Book</a></div></nav>
 
 <header class="hero" id="top">
 <div>
@@ -162,6 +175,41 @@ section h2{font-size:26px;}
 <p style="margin-top:6px;font-size:0.95em">Listening to the audiobook? <a href="audiobook-companion.pdf" download>Download the companion PDF</a> — all nine diagrams and the complete glossary of the Work.</p>
 </div></div></section>
 
+<section id="subscribe">
+<div class="eyebrow">Stay Connected</div>
+<h2>Subscribe</h2>
+<p>Occasional notes from the Modern Fourth Way &mdash; new writing, the audiobook&rsquo;s release, and first word of <a href="events.html">upcoming gatherings</a>. No noise, and you can unsubscribe anytime.</p>
+<div class="subwrap">
+<form id="subForm" novalidate>
+<label for="sname">Name</label>
+<input type="text" id="sname" autocomplete="name" required>
+<label for="semail">Email address</label>
+<input type="email" id="semail" autocomplete="email" required>
+<button type="submit" id="subbtn">Subscribe</button>
+<div id="submsg"></div>
+<div class="fine">Used only for Modern Fourth Way updates &mdash; never shared.</div>
+</form>
+</div>
+<script>
+document.getElementById('subForm').addEventListener('submit',async function(e){
+e.preventDefault();
+var msg=document.getElementById('submsg'),btn=document.getElementById('subbtn');
+var name=document.getElementById('sname').value.trim();
+var email=document.getElementById('semail').value.trim();
+msg.className='';msg.textContent='';
+if(!name||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.className='err';msg.textContent='Please fill in your name and a valid email address.';return;}
+var sp=name.lastIndexOf(' ');
+var first=sp>0?name.slice(0,sp):name,last=sp>0?name.slice(sp+1):'';
+btn.disabled=true;btn.textContent='One moment\u2026';
+try{
+var r=await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XMCAwm',{method:'POST',headers:{'Content-Type':'application/json','revision':'2024-10-15'},body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'modernfourthway.org subscribe',profile:{data:{type:'profile',attributes:{email:email,first_name:first,last_name:last}}}},relationships:{list:{data:{type:'list',id:'WBSKrw'}}}}})});
+if(r.status===202){msg.className='ok';msg.innerHTML='You&rsquo;re subscribed. <em>(If a confirmation email arrives, one click completes it.)</em>';document.getElementById('subForm').reset();}
+else{throw new Error('status '+r.status);}
+}catch(err){msg.className='err';msg.textContent='Something went wrong \u2014 please try again in a moment.';}
+btn.disabled=false;btn.textContent='Subscribe';
+});
+</script>
+</section>
 <footer>
 <p>&copy; 2026 Jeremy Simon. All rights reserved.</p>
 <p>Text, diagrams, tables, and the Living Enneagram animation are adapted from <em>The Modern Fourth Way: A Practical Workbook for Waking Up — and Discovering What You Actually Are</em>.</p>
