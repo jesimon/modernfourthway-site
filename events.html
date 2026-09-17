@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — The Modern Fourth Way</title>
+<meta name="description" content="In-person gatherings to explore the ideas and practices of The Modern Fourth Way — starting in northern Illinois, expanding by interest. Register to be the first to know.">
+<style>
+:root{--ink:#151936;--indigo:#1c2144;--panel:#232952;--gold:#e8c88c;--gold-dim:#b39a67;
+--ember:#ffb45e;--moon:#efe9da;--body:#d6d2c4;--slate:#8a91b8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ink);color:var(--body);font-family:Georgia,'Times New Roman',serif;line-height:1.75;font-size:17px;}
+a{color:var(--gold);text-decoration:none;}
+a:hover{text-decoration:underline;}
+.eyebrow{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--slate);}
+nav{position:sticky;top:0;z-index:50;background:rgba(21,25,54,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(232,200,140,.25);}
+nav .inner{max-width:1080px;margin:0 auto;padding:14px 22px;display:flex;gap:22px;align-items:center;flex-wrap:wrap;}
+nav .brand{color:var(--gold);font-size:15px;letter-spacing:.06em;white-space:nowrap;}
+nav a.item{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--body);opacity:.85;}
+nav a.item:hover{color:var(--gold);text-decoration:none;opacity:1;}
+nav a.item.active{color:var(--gold);opacity:1;}
+header.hero{max-width:1080px;margin:0 auto;padding:84px 22px 24px;}
+header.hero h1{font-size:46px;font-weight:normal;color:var(--gold);line-height:1.12;margin:14px 0 18px;}
+header.hero .sub{font-style:italic;font-size:20px;color:var(--moon);margin-bottom:8px;max-width:760px;}
+section{max-width:1080px;margin:0 auto;padding:34px 22px 64px;}
+section p{margin-bottom:15px;max-width:780px;}
+.notice{font-style:italic;color:var(--moon);border-left:2px solid var(--gold-dim);padding:6px 0 6px 18px;margin:26px 0;max-width:760px;}
+.card{background:var(--panel);border:1px solid rgba(232,200,140,.28);box-shadow:0 18px 50px rgba(0,0,0,.35);max-width:640px;padding:36px 34px;margin-top:40px;}
+.card h2{font-size:26px;font-weight:normal;color:var(--gold);margin-bottom:6px;}
+.card .lede{font-size:15px;color:var(--slate);margin-bottom:24px;}
+label{display:block;font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);margin:18px 0 6px;}
+input[type=text],input[type=email]{width:100%;background:var(--ink);border:1px solid rgba(232,200,140,.3);color:var(--moon);font-family:Georgia,serif;font-size:16px;padding:11px 13px;border-radius:2px;}
+input[type=text]:focus,input[type=email]:focus{outline:none;border-color:var(--gold);}
+.check{display:flex;gap:12px;align-items:flex-start;margin:16px 0 0;cursor:pointer;}
+.check input{margin-top:6px;accent-color:#e8c88c;width:16px;height:16px;flex:none;cursor:pointer;}
+.check span{font-size:16px;color:var(--body);}
+#otherWhere{display:none;margin-top:8px;}
+#otherWhere.show{display:block;}
+button{margin-top:28px;width:100%;background:var(--gold);color:var(--ink);border:none;font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:15px;cursor:pointer;border-radius:2px;}
+button:hover{background:var(--ember);}
+button:disabled{opacity:.55;cursor:wait;}
+.fine{font-size:13px;color:var(--slate);margin-top:14px;line-height:1.6;}
+#msg{display:none;margin-top:22px;padding:14px 18px;border-radius:2px;font-size:15.5px;}
+#msg.ok{display:block;background:rgba(232,200,140,.12);border:1px solid rgba(232,200,140,.45);color:var(--moon);}
+#msg.err{display:block;background:rgba(255,120,120,.08);border:1px solid rgba(255,120,120,.4);color:#f0c8c0;}
+footer{max-width:1080px;margin:0 auto;padding:40px 22px 60px;border-top:1px solid rgba(232,200,140,.14);font-size:14px;color:var(--slate);}
+@media(max-width:640px){header.hero h1{font-size:36px;}.card{padding:28px 22px;}}
+</style>
+</head>
+<body>
+<nav><div class="inner">
+<a class="brand" href="index.html">The Modern Fourth Way</a>
+<a class="item" href="index.html#situation">The Situation</a>
+<a class="item" href="index.html#machine">The Machine</a>
+<a class="item" href="index.html#practices">Practices</a>
+<a class="item" href="index.html#enneagram">Enneagram</a>
+<a class="item" href="map.html">The Map</a>
+<a class="item active" href="events.html">Events</a>
+<a class="item" href="index.html#book">The Book</a>
+</div></nav>
+
+<header class="hero">
+<div class="eyebrow">Gatherings &middot; In Person</div>
+<h1>Events</h1>
+<p class="sub">Reading is the beginning. The Work has always been passed along in rooms — people sitting together, practicing together, asking the questions that only arise when someone else is there to hear them.</p>
+</header>
+
+<section>
+<p>In-person gatherings are being planned now: evenings and workshops for coming together around the ideas and practices of <em>The Modern Fourth Way</em> — to learn, ask questions, compare notes from the practices, and explore the teachings more deeply than a book can take you alone.</p>
+<p>The first events will be held in <strong style="color:var(--moon);font-weight:normal;">northern Illinois</strong>. From there, gatherings will expand to other regions based on where interest gathers — which is exactly what the form below measures.</p>
+<div class="notice">Nothing is on the calendar yet. Register below, and when the first gathering is scheduled, you&rsquo;ll be the first to know.</div>
+
+<div class="card">
+<h2>Register your interest</h2>
+<div class="lede">A minute of your time; no commitment implied.</div>
+<form id="regForm" novalidate>
+<label for="fname">Name</label>
+<input type="text" id="fname" autocomplete="name" required>
+<label for="femail">Email address</label>
+<input type="email" id="femail" autocomplete="email" required>
+<label for="fzip">ZIP code</label>
+<input type="text" id="fzip" autocomplete="postal-code" inputmode="numeric" pattern="\d{5}(-\d{4})?" required>
+<label style="margin-top:26px;">Where would you attend?</label>
+<label class="check" style="text-transform:none;letter-spacing:0;"><input type="checkbox" id="cIL"><span>I&rsquo;m interested in events in northern Illinois</span></label>
+<label class="check" style="text-transform:none;letter-spacing:0;"><input type="checkbox" id="cOther"><span>I&rsquo;m interested in events in other areas</span></label>
+<div id="otherWhere">
+<label for="fwhere">Where? (city / region)</label>
+<input type="text" id="fwhere" placeholder="e.g., Madison WI, Chicago suburbs, Denver&hellip;">
+</div>
+<button type="submit" id="btn">Keep Me Posted</button>
+<div id="msg"></div>
+<div class="fine">Your information is used only to tell you about Modern Fourth Way events — nothing else, no sharing, and you can unsubscribe anytime.</div>
+</form>
+</div>
+</section>
+
+<footer>&copy; 2026 Modern Fourth Way Publishing &middot; <a href="index.html">Home</a></footer>
+
+<script>
+const COMPANY='XMCAwm', LIST='VfxDQP';
+const cOther=document.getElementById('cOther'), ow=document.getElementById('otherWhere');
+cOther.addEventListener('change',()=>{ow.classList.toggle('show',cOther.checked);if(cOther.checked)document.getElementById('fwhere').focus();});
+document.getElementById('regForm').addEventListener('submit',async e=>{
+e.preventDefault();
+const msg=document.getElementById('msg'),btn=document.getElementById('btn');
+const name=document.getElementById('fname').value.trim();
+const email=document.getElementById('femail').value.trim();
+const zip=document.getElementById('fzip').value.trim();
+const il=document.getElementById('cIL').checked, other=cOther.checked;
+const where=document.getElementById('fwhere').value.trim();
+msg.className='';msg.textContent='';
+if(!name||!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||!/^\d{5}(-\d{4})?$/.test(zip)){msg.className='err';msg.textContent='Please fill in your name, a valid email, and a 5-digit ZIP code.';return;}
+if(other&&!where){msg.className='err';msg.textContent='You checked "other areas" — let us know where, so we can plan around it.';return;}
+const sp=name.lastIndexOf(' ');
+const first=sp>0?name.slice(0,sp):name, last=sp>0?name.slice(sp+1):'';
+btn.disabled=true;btn.textContent='One moment\u2026';
+try{
+const r=await fetch('https://a.klaviyo.com/client/subscriptions/?company_id='+COMPANY,{method:'POST',headers:{'Content-Type':'application/json','revision':'2024-10-15'},body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'modernfourthway.org Events page',profile:{data:{type:'profile',attributes:{email:email,first_name:first,last_name:last,location:{zip:zip},properties:{mfw_interest_northern_illinois:il,mfw_interest_other_areas:other,mfw_other_areas_detail:other?where:''}}}}},relationships:{list:{data:{type:'list',id:LIST}}}}})});
+if(r.status===202){msg.className='ok';msg.innerHTML='You&rsquo;re registered. When the first gathering is scheduled, you&rsquo;ll be the first to know. <em>(If a confirmation email arrives, one click completes it.)</em>';document.getElementById('regForm').reset();ow.classList.remove('show');}
+else{throw new Error('status '+r.status);}
+}catch(err){msg.className='err';msg.textContent='Something went wrong sending your registration — please try again in a moment.';}
+btn.disabled=false;btn.textContent='Keep Me Posted';
+});
+</script>
+</body>
+</html>
