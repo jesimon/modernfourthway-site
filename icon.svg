@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="46%" r="72%">
+      <stop offset="0%" stop-color="#2b3162"/>
+      <stop offset="55%" stop-color="#151936"/>
+      <stop offset="100%" stop-color="#0e1124"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff6dd" stop-opacity="0.95"/>
+      <stop offset="38%" stop-color="#f3d9a4" stop-opacity="0.55"/>
+      <stop offset="72%" stop-color="#e8c88c" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#e8c88c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffdf4"/>
+      <stop offset="100%" stop-color="#fff0c9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" fill="url(#bg)"/>
+  <circle cx="32" cy="32" r="15" fill="url(#glow)"/>
+  <circle cx="32" cy="32" r="4.5" fill="url(#core)"/>
+  <g fill="none" stroke="#e8c88c" stroke-linejoin="round" stroke-linecap="round">
+    <circle cx="32" cy="32" r="25" stroke-width="2.4"/>
+    <path d="M32.0,7.0 L53.65,44.5 L10.35,44.5 Z" stroke-width="1.9"/>
+    <path d="M48.07,12.85 L40.55,55.49 L56.62,27.66 L15.93,12.85 L23.45,55.49 L7.38,27.66 Z" stroke-width="1.9"/>
+  </g>
+</svg>
