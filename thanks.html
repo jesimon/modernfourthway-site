@@ -19,7 +19,15 @@
   .note{font-size:13px;opacity:.6;margin-top:26px;font-style:italic;}
   .home{margin-top:34px;font-size:14px;}
   .home a{color:#dcd8c8;}
-</style></head><body><div class="card">
+</style><!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18462269872"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18462269872');
+</script>
+</head><body><div class="card">
 <h1>Thank you.</h1>
 <p>Your copy of <em>The Modern Fourth Way</em> is on its way to being yours. The EPUB opens in
 Apple Books, Kindle (via Send&nbsp;to&nbsp;Kindle), Kobo, and every standard reader.</p>
@@ -35,6 +43,8 @@ Apple Books, Kindle (via Send&nbsp;to&nbsp;Kindle), Kobo, and every standard rea
   if (!sid) { location.replace('/'); return; }
   var tries = 0;
   function ready(email){
+    try { gtag('event', 'conversion', { 'send_to': 'AW-18462269872/-UQhCPvE1f0cELDDv-NE',
+      'value': 19.99, 'currency': 'USD', 'transaction_id': sid }); } catch(e){}
     var a = document.createElement('a');
     a.className = 'btn'; a.id = 'btn';
     a.href = SVC + '/download?session_id=' + encodeURIComponent(sid);
