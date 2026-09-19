@@ -17,6 +17,9 @@
     font-family: Georgia, 'Times New Roman', serif; color:var(--moon);}
   #scene{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;}
   .hud{position:fixed;z-index:10;pointer-events:none;}
+  #backlink{display:inline-block;pointer-events:auto;color:var(--gold);text-decoration:none;
+    font-size:13.5px;letter-spacing:.04em;margin-bottom:12px;}
+  #backlink:hover{text-decoration:underline;}
   #titleblock{top:28px;left:34px;max-width:340px;}
   #eyebrow{font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:10px;letter-spacing:.32em;
     color:var(--slate);text-transform:uppercase;margin-bottom:10px;}
@@ -64,6 +67,7 @@
 <body>
 <canvas id="scene"></canvas>
 <div class="hud" id="titleblock">
+  <a id="backlink" href="index.html">&larr; The Modern Fourth Way</a>
   <div id="eyebrow">From The Modern Fourth Way</div>
   <h1 id="title">The Living Enneagram</h1>
   <div id="subtitle">The Law of Octaves climbs the spiral. The Law of Three pulses through the triangle. The inner circulation weaves between the levels.</div>
