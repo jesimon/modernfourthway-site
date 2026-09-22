@@ -51,7 +51,7 @@ Apple Books, Kindle (via Send&nbsp;to&nbsp;Kindle), Kobo, and every standard rea
     a.href = SVC + '/download?session_id=' + encodeURIComponent(sid);
     a.textContent = 'Download the eBook';
     btn.replaceWith(a);
-    note.innerHTML = 'This page stays valid &mdash; bookmark it to re-download on another device.' +
+    note.innerHTML = 'This page stays valid &mdash; bookmark it to re-download on another device, and we&rsquo;ve emailed this link to ' + (email || 'you') + ' as well.' +
       (email ? '<br>A receipt has been emailed to ' + email.replace(/</g,'&lt;') + '.' : '');
   }
   function denied(){
