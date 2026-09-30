@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://modernfourthway.org/sitemap.xml
+Disallow: /free/

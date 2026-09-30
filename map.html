@@ -24,7 +24,7 @@ background:linear-gradient(rgba(16,19,40,.85), rgba(16,19,40,0));}
 #topbar .ttl{color:var(--moon);font-style:italic;font-size:14px;opacity:.85;}
 #hint{bottom:18px;left:20px;font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:10px;
 letter-spacing:.14em;text-transform:uppercase;color:var(--slate);max-width:60vw;line-height:1.8;}
-#controls{bottom:16px;right:16px;display:flex;flex-direction:column;gap:8px;pointer-events:auto;}
+#controls{position:fixed;z-index:10;bottom:16px;right:16px;display:flex;flex-direction:column;gap:8px;pointer-events:auto;}
 #controls button{width:46px;height:46px;border-radius:8px;background:rgba(21,25,54,.85);
 border:1px solid rgba(232,200,140,.55);color:var(--gold);font-size:20px;line-height:1;cursor:pointer;
 font-family:Georgia,serif;backdrop-filter:blur(4px);}
@@ -33,6 +33,15 @@ font-family:Georgia,serif;backdrop-filter:blur(4px);}
 #zoomlvl{position:fixed;bottom:22px;right:74px;color:var(--slate);font-size:11px;
 font-family:Avenir,'Segoe UI',system-ui,sans-serif;letter-spacing:.06em;}
 @media (max-width:640px){ #hint{display:none;} #topbar .ttl{display:none;} }
+#dlpill{position:fixed;z-index:20;bottom:52px;left:50%;transform:translateX(-50%);pointer-events:auto;
+font-family:Avenir,'Segoe UI',system-ui,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+background:#e8c88c;color:#151936;border:none;border-radius:30px;padding:13px 22px;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.45);white-space:nowrap;}
+#dlpill:hover{background:#f1d8a6;}
+#dlmodal{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(10,12,28,.72);padding:18px;}
+#dlmodal.on{display:flex;}
+#dlmodal .box{position:relative;max-height:92vh;overflow:auto;}
+#dlmodal .x{position:absolute;top:8px;right:12px;background:none;border:none;color:#8a91b8;font-size:26px;cursor:pointer;z-index:2;}
+@media (max-width:640px){ #dlpill{left:14px;transform:none;bottom:18px;font-size:10.5px;padding:11px 14px;max-width:calc(100% - 92px);white-space:normal;text-align:left;line-height:1.4;} }
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18462269872"></script>
@@ -765,6 +774,18 @@ if(window.visualViewport){
 }
 fit();
 console.log('great-map viewer v1');
+})();
+</script>
+<button id="dlpill" type="button">&#10515;&nbsp; Download the full-resolution map &mdash; free</button>
+<div id="dlmodal" role="dialog" aria-label="Download the Great Map"><div class="box"><button class="x" aria-label="Close">&times;</button>
+<div class="mfw-offer" data-source="map page" data-copy="map"></div></div></div>
+<script src="/js/signup.js"></script>
+<script>
+(function(){var m=document.getElementById('dlmodal');
+document.getElementById('dlpill').addEventListener('click',function(){m.classList.add('on');try{gtag('event','map_download_open');}catch(e){}});
+m.querySelector('.x').addEventListener('click',function(){m.classList.remove('on');});
+m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('on');});
+['pointerdown','wheel','touchstart','keydown'].forEach(function(t){m.addEventListener(t,function(e){e.stopPropagation();});});
 })();
 </script>
 </body>
