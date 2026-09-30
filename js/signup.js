@@ -77,7 +77,7 @@
         el.innerHTML = '<div class="mo-eyebrow">Here you go' + (first ? ', ' + first.replace(/[<>&"]/g, '') : '') + '</div>' +
           '<h3>Your free chapter and the Great Map</h3>' +
           '<div class="mo-dl">' + FILES.map(function (f) { return '<a href="' + f[0] + '" download>' + f[1] + '</a>'; }).join('') + '</div>' +
-          '<p style="margin-top:14px">One more step: we&rsquo;ve sent a short confirmation email. Click the link in it and the practice notes will start arriving &mdash; the first one with these same downloads, so you&rsquo;ll always have them.</p>' +
+          '<p style="margin-top:14px">We&rsquo;ve also emailed you these links, so you&rsquo;ll always have them &mdash; and over the next two weeks a few short notes will follow, one practice at a time.</p>' +
           '<div class="mo-fine">Not seeing it? Check Promotions or Spam for a message from info@modernfourthway.org.</div>';
       }).catch(function () {
         err.textContent = 'Something went wrong — please try again in a moment.';
